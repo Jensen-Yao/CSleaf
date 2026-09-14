@@ -1,0 +1,74 @@
+[
+  {
+    "id": "blank",
+    "name": "Blank / 最小模板",
+    "nameEn": "Blank document",
+    "desc": "最小可编译的 LaTeX 文档，适合快速试验",
+    "icon": "page",
+    "compiler": "latexmk",
+    "tags": ["通用"]
+  },
+  {
+    "id": "article",
+    "name": "学术文章",
+    "nameEn": "Academic article",
+    "desc": "英文论文骨架：章节、TikZ 图、三线表、参考文献",
+    "icon": "article",
+    "compiler": "latexmk",
+    "tags": ["英文", "论文"]
+  },
+  {
+    "id": "article-zh",
+    "name": "中文学术论文",
+    "nameEn": "Chinese article (ctex)",
+    "desc": "ctexart 中文论文：摘要、关键词、章节、图表、参考文献",
+    "icon": "article",
+    "compiler": "xelatex",
+    "tags": ["中文", "论文"]
+  },
+  {
+    "id": "ieee-conference",
+    "name": "IEEE 会议论文",
+    "nameEn": "IEEE conference",
+    "desc": "IEEEtran 会议模板，双栏排版，含参考文献与图表示例",
+    "icon": "ieee",
+    "compiler": "latexmk",
+    "tags": ["英文", "IEEE"]
+  },
+  {
+    "id": "beamer",
+    "name": "Beamer 演示",
+    "nameEn": "Beamer slides",
+    "desc": "学术报告幻灯片：分节、图表、分栏、高亮块",
+    "icon": "slides",
+    "compiler": "latexmk",
+    "tags": ["演示"]
+  },
+  {
+    "id": "thesis-zh",
+    "name": "中文毕业论文",
+    "nameEn": "Chinese thesis",
+    "desc": "ctexbook 毕业论文骨架：封面、摘要、目录、多章、附录、参考文献",
+    "icon": "thesis",
+    "compiler": "xelatex",
+    "tags": ["中文", "学位论文"]
+  },
+  {
+    "id": "cv",
+    "name": "英文简历",
+    "nameEn": "Academic CV",
+    "desc": "简洁单页学术简历：教育经历、发表论文、技能",
+    "icon": "cv",
+    "compiler": "latexmk",
+    "tags": ["简历"]
+  },
+  {
+    "id": "math-notes",
+    "name": "数学笔记",
+    "nameEn": "Math notes",
+    "desc": "amsthm 定理环境、证明、编号公式，适合课程笔记",
+    "icon": "math",
+    "compiler": "latexmk",
+    "tags": ["数学"]
+  }
+]

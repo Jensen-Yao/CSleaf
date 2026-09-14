@@ -1,0 +1,64 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper, margin=2.5cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\title{Course Notes: An Example in Analysis}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+These notes demonstrate a theorem-friendly template: numbered theorem
+environments, clean proofs, and display math — ideal for course notes and
+problem sets.
+\end{abstract}
+
+\section{Definitions and Theorems}
+
+\begin{definition}[Continuity]
+A function $f : \mathbb{R} \to \mathbb{R}$ is continuous at $x_0$ if
+\[
+\forall \varepsilon > 0 \;\; \exists \delta > 0 :
+|x - x_0| < \delta \implies |f(x) - f(x_0)| < \varepsilon .
+\]
+\end{definition}
+
+\begin{theorem}[Intermediate Value]
+Let $f$ be continuous on $[a,b]$. If $f(a) \cdot f(b) < 0$, then there
+exists $c \in (a,b)$ with $f(c) = 0$.
+\end{theorem}
+
+\begin{proof}
+WLOG assume $f(a) < 0 < f(b)$. Let
+\[
+S = \{ x \in [a,b] : f(x) < 0 \},
+\]
+and take $c = \sup S$. By continuity, $f(c) = 0$.
+\end{proof}
+
+\begin{remark}
+The converse fails: a function may have a root without changing sign.
+\end{remark}
+
+\section{Exercises}
+\begin{enumerate}[label=\textbf{E\arabic*.}]
+  \item Prove that a monotone function has at most countably many
+        discontinuities.
+  \item Show that $f(x) = x\sin(1/x)$ (extended by $f(0)=0$) is continuous
+        on $\mathbb{R}$.
+\end{enumerate}
+
+\end{document}

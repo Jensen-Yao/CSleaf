@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+web/node_modules/
+
+# Build output
+web/dist/
+
+# User workspace data (papers live here)
+workspace/
+
+# Logs & OS junk
+*.log
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Env
+.env
+.env.local
+
+# Test artifacts
+/test-output/

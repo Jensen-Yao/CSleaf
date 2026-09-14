@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CSleaf — 本地优先的 Overleaf 风格 LaTeX 编辑器</title>
+<meta name="description" content="CSleaf：一条命令在你自己的电脑上获得 Overleaf 级别的 LaTeX 论文写作体验。无需 Docker、无需联网，支持 latexmk/xelatex、实时 PDF 预览、SyncTeX 正反向跳转、智能补全。" />
+<link rel="icon" type="image/svg+xml" href="assets/leaf.svg"/>
+<style>
+  :root{
+    --bg:#0b0f14; --bg1:#10151b; --bg2:#151c24; --border:#212b36; --border2:#2d3946;
+    --text:#e9eef4; --text1:#b7c2ce; --text2:#7d8b99;
+    --green:#34d399; --green2:#10b981; --dim:#10b98122;
+    --mono:"JetBrains Mono","Cascadia Code",Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.6;overflow-x:hidden}
+  ::selection{background:#10b98144}
+  a{color:var(--green);text-decoration:none}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:50;background:#0b0f14e8;backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+  nav .wrap{display:flex;align-items:center;gap:12px;height:58px}
+  nav img{width:26px;height:26px;border-radius:7px}
+  nav .brand{font-weight:800;font-size:17px;letter-spacing:.3px;color:var(--text)}
+  nav .brand b{color:var(--green)}
+  nav .links{margin-left:auto;display:flex;gap:22px;font-size:13.5px}
+  nav .links a{color:var(--text1)} nav .links a:hover{color:var(--text)}
+  nav .gh{display:inline-flex;align-items:center;gap:7px;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:7px 13px;border-radius:9px;font-size:13px;transition:.16s}
+  nav .gh:hover{border-color:var(--green);color:var(--green)}
+  @media(max-width:720px){nav .links{display:none}}
+
+  /* hero */
+  .hero{position:relative;padding:96px 0 64px;text-align:center;background:
+    radial-gradient(900px 420px at 50% -80px,#10b98126,transparent 70%)}
+  .hero .logo{width:88px;height:88px;border-radius:24px;box-shadow:0 18px 60px #10b98140;animation:float 5s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+  .hero h1{font-size:52px;letter-spacing:.5px;margin:22px 0 4px}
+  .hero h1 b{color:var(--green)}
+  .hero .sub{font-size:19px;color:var(--text1);max-width:640px;margin:14px auto 0}
+  .hero .sub-en{font-size:13.5px;color:var(--text2);margin-top:6px}
+  .hero .ctas{margin-top:34px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:12px;font-size:14.5px;font-weight:600;transition:.16s;border:1px solid transparent}
+  .btn.primary{background:var(--green);color:#07130e}
+  .btn.primary:hover{background:var(--green2);transform:translateY(-2px);box-shadow:0 10px 30px #10b98144}
+  .btn.ghost{border-color:var(--border2);color:var(--text)}
+  .btn.ghost:hover{border-color:var(--green);color:var(--green)}
+  .hero .badges{margin-top:26px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+  .badge{font-size:11.5px;color:var(--text1);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:4px 12px}
+  .badge b{color:var(--green);font-weight:700}
+
+  /* shot */
+  .shot{margin:-10px auto 0;max-width:1120px;padding:0 24px}
+  .shot .frame{border:1px solid var(--border2);border-radius:16px;overflow:hidden;box-shadow:0 30px 90px #00000080;background:var(--bg1)}
+  .frame img{display:block;width:100%;height:auto}
+  .frame .bar{display:flex;gap:6px;padding:11px 14px;background:#0d1218;border-bottom:1px solid var(--border)}
+  .frame .bar i{width:11px;height:11px;border-radius:50%;background:var(--border2)}
+  .frame .bar i:first-child{background:#f8717188}.frame .bar i:nth-child(2){background:#fbbf2488}.frame .bar i:nth-child(3){background:#34d39988}
+  .caption{text-align:center;color:var(--text2);font-size:13px;margin-top:14px}
+
+  /* sections */
+  section{padding:78px 0}
+  .kicker{color:var(--green);font-weight:700;font-size:12.5px;letter-spacing:2.5px;text-transform:uppercase}
+  h2{font-size:32px;margin:10px 0 14px;letter-spacing:.3px}
+  .lead{color:var(--text1);max-width:660px;font-size:15.5px}
+
+  .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:40px}
+  .card{background:var(--bg1);border:1px solid var(--border);border-radius:14px;padding:22px;transition:.18s}
+  .card:hover{transform:translateY(-3px);border-color:var(--border2);box-shadow:0 16px 44px #00000066}
+  .card .ico{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,var(--green),var(--green2));display:flex;align-items:center;justify-content:center;font-size:19px;color:#07130e;margin-bottom:14px}
+  .card h3{font-size:15.5px;margin-bottom:6px}
+  .card p{font-size:13.5px;color:var(--text1)}
+
+  .gallery{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:38px}
+  @media(max-width:760px){.gallery{grid-template-columns:1fr}}
+  .gallery figure{border:1px solid var(--border);border-radius:13px;overflow:hidden;background:var(--bg1)}
+  .gallery img{width:100%;display:block}
+  .gallery figcaption{padding:11px 15px;font-size:12.5px;color:var(--text2);border-top:1px solid var(--border)}
+
+  /* code */
+  .codeblock{background:#0d1218;border:1px solid var(--border2);border-radius:14px;overflow:hidden;margin-top:30px}
+  .codeblock .head{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);color:var(--text2);font-size:12px}
+  .codeblock pre{padding:20px 22px;font-family:var(--mono);font-size:13.5px;line-height:2;overflow-x:auto}
+  .c{color:#6a7a8a}.g{color:#34d399}.y{color:#e0af68}.b{color:#7dd3fc}
+  .copy{background:none;border:1px solid var(--border2);color:var(--text1);border-radius:7px;font-size:11.5px;padding:4px 10px;cursor:pointer;transition:.16s}
+  .copy:hover{color:var(--green);border-color:var(--green)}
+
+  table{width:100%;border-collapse:collapse;margin-top:34px;font-size:14px}
+  th,td{padding:13px 16px;text-align:left;border-bottom:1px solid var(--border)}
+  th{color:var(--text2);font-size:12px;text-transform:uppercase;letter-spacing:1px}
+  td:first-child{font-weight:600}
+  .yes{color:var(--green)} .no{color:#f87171} .mid{color:#fbbf24}
+  tr:hover td{background:#ffffff05}
+
+  .steps{counter-reset:st;margin-top:34px;display:flex;flex-direction:column;gap:16px}
+  .step{display:flex;gap:16px;background:var(--bg1);border:1px solid var(--border);border-radius:13px;padding:19px 21px}
+  .step::before{counter-increment:st;content:counter(st);flex:none;width:32px;height:32px;border-radius:10px;background:var(--dim);color:var(--green);display:flex;align-items:center;justify-content:center;font-weight:800}
+  .step h4{font-size:14.5px;margin-bottom:3px}
+  .step p{font-size:13px;color:var(--text1)}
+
+  footer{border-top:1px solid var(--border);padding:44px 0 60px;text-align:center;color:var(--text2);font-size:13px}
+  footer .leaf{width:30px;height:30px;border-radius:8px;margin-bottom:14px}
+  footer a{color:var(--text1)} footer a:hover{color:var(--green)}
+  .fade{opacity:0;transform:translateY(22px);transition:all .7s cubic-bezier(.2,.7,.3,1)}
+  .fade.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <img src="assets/leaf.svg" alt=""/><span class="brand">CS<b>leaf</b></span>
+    <div class="links">
+      <a href="#features">功能</a><a href="#shots">界面</a><a href="#start">快速开始</a><a href="#compare">对比</a>
+    </div>
+    <a class="gh" href="https://github.com/Jensen-Yao/CSleaf" target="_blank">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      GitHub
+    </a>
+  </div>
+</nav>
+
+<header class="hero">
+  <img class="logo" src="assets/leaf.svg" alt="CSleaf"/>
+  <h1>CS<b>leaf</b></h1>
+  <p class="sub">一条命令，在你的电脑上获得 Overleaf 级别的 LaTeX 论文写作体验</p>
+  <p class="sub-en">A local-first, Overleaf-style LaTeX editor — no Docker, no cloud, no compromise</p>
+  <div class="ctas">
+    <a class="btn primary" href="https://github.com/Jensen-Yao/CSleaf#-快速开始-quick-start">快速开始 →</a>
+    <a class="btn ghost" href="https://github.com/Jensen-Yao/CSleaf" target="_blank">查看源码</a>
+  </div>
+  <div class="badges">
+    <span class="badge"><b>0</b> Docker 容器</span>
+    <span class="badge"><b>0</b> 云依赖 · 离线可用</span>
+    <span class="badge"><b>8</b> 内置模板 · 全部真机编译验证</span>
+    <span class="badge"><b>2</b> 行命令启动</span>
+  </div>
+</header>
+
+<div class="shot fade">
+  <div class="frame">
+    <div class="bar"><i></i><i></i><i></i></div>
+    <img src="assets/editor.png" alt="CSleaf 主界面：文件树 + Monaco 编辑器 + 实时 PDF 预览"/>
+  </div>
+  <p class="caption">文件树 · LaTeX 智能补全 · 一键编译 · 实时 PDF 预览 · SyncTeX 双向跳转</p>
+</div>
+
+<section id="features">
+  <div class="wrap">
+    <div class="kicker fade">Features</div>
+    <h2 class="fade">为论文写作而设计</h2>
+    <p class="lead fade">从开题到投稿的每一个环节——写、编、译、查——都放在同一个界面里，并且完全运行在你自己的机器上。</p>
+    <div class="features">
+      <div class="card fade"><div class="ico">⚡</div><h3>一键编译</h3><p>latexmk 自动处理多轮编译与 BibTeX，也支持 pdflatex / xelatex / lualatex。保存后自动编译，PDF 原位刷新。</p></div>
+      <div class="card fade"><div class="ico">🧭</div><h3>SyncTeX 正反向跳转</h3><p>Alt+S 从光标定位 PDF 位置，双击 PDF 反向跳回源码行。长论文里再也不用肉眼找段落。</p></div>
+      <div class="card fade"><div class="ico">🧠</div><h3>上下文感知补全</h3><p>\cite{ 自动列出 .bib 条目（带标题预览），\ref{ 列出全文标签，\includegraphics{ 列出项目图片，150+ 命令与环境片段。</p></div>
+      <div class="card fade"><div class="ico">🐞</div><h3>错误定位面板</h3><p>解析编译日志，错误/警告精确到文件与行号，点击直接跳转；缺失宏包一目了然。</p></div>
+      <div class="card fade"><div class="ico">🗂️</div><h3>项目一切 </h3><p>模板建项、ZIP 导入导出、重命名复制删除、文件树右键操作、上传图片、清理辅助文件。</p></div>
+      <div class="card fade"><div class="ico">🌗</div><h3>双语 · 双主题 · 可调布局</h3><p>中文/English 一键切换，深浅两套叶绿主题，三栏布局自由拖拽，所有偏好本地记忆。</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="shots" style="background:var(--bg1);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="wrap">
+    <div class="kicker fade">Screenshots</div>
+    <h2 class="fade">界面一览</h2>
+    <div class="gallery">
+      <figure class="fade"><img src="assets/templates.png" alt="模板库"/><figcaption>📚 8 套开箱即用的模板：中英文论文 / IEEE / Beamer / 毕业论文 / CV / 数学笔记</figcaption></figure>
+      <figure class="fade"><img src="assets/home.png" alt="项目画廊"/><figcaption>🗂️ 项目画廊：创建、导入 ZIP、导出备份，一切尽在列表</figcaption></figure>
+      <figure class="fade"><img src="assets/editor-light.png" alt="浅色主题"/><figcaption>🌗 深色 / 浅色主题随心切换，护眼写作</figcaption></figure>
+      <figure class="fade"><img src="assets/editor.png" alt="深色工作区"/><figcaption>🌙 默认深色工作区：叶绿语法高亮与沉浸式预览</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="start">
+  <div class="wrap">
+    <div class="kicker fade">Quick Start</div>
+    <h2 class="fade">两分钟跑起来</h2>
+    <div class="steps">
+      <div class="step fade"><div><h4>安装 TeX 发行版（如果还没有）</h4><p>Windows 推荐 <a href="https://tug.org/texlive/" target="_blank">TeX Live</a>；macOS：<code>brew install --cask mactex-no-gui</code>；Linux：<code>apt install texlive-full</code>。CSleaf 会自动探测，包括 E:\texlive 这类自定义安装位置。</p></div></div>
+      <div class="step fade"><div><h4>启动 CSleaf</h4><p>需要 Node.js ≥ 18：</p></div></div>
+    </div>
+    <div class="codeblock fade">
+      <div class="head"><span>Terminal</span><button class="copy" onclick="cp(this)">复制</button></div>
+      <pre><span class="c"># 克隆并启动</span>
+git clone <span class="b">https://github.com/Jensen-Yao/CSleaf.git</span>
+cd CSleaf
+npm run setup      <span class="c"># 安装依赖 + 构建前端</span>
+npm start          <span class="c"># 打开 http://127.0.0.1:4513 🌿</span></pre>
+    </div>
+    <p class="lead fade" style="margin-top:22px">从模板新建项目 → <b style="color:var(--green)">Ctrl+Enter</b> 编译 → 开始写作。你的论文保存在 <code>workspace/</code>，永远属于你。</p>
+  </div>
+</section>
+
+<section id="compare" style="background:var(--bg1);border-top:1px solid var(--border)">
+  <div class="wrap">
+    <div class="kicker fade">Compare</div>
+    <h2 class="fade">为什么不是它们？</h2>
+    <table class="fade">
+      <tr><th></th><th>CSleaf</th><th>Overleaf</th><th>Overleaf CE 自部署</th><th>TeXstudio</th><th>VS Code + 插件</th></tr>
+      <tr><td>本地运行 · 数据不出机器</td><td class="yes">✓</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+      <tr><td>无需 Docker / 复杂部署</td><td class="yes">✓</td><td class="mid">—</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+      <tr><td>现代三栏 Web 界面</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗</td><td class="mid">需配置</td></tr>
+      <tr><td>开箱即用（0 配置写作）</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗</td><td class="mid">—</td><td class="no">✗</td></tr>
+      <tr><td>中文论文 / 模板支持</td><td class="yes">✓</td><td class="mid">一般</td><td class="mid">一般</td><td class="yes">✓</td><td class="mid">需配置</td></tr>
+      <tr><td>内存占用 & 启动速度</td><td class="yes">轻 · 秒级</td><td class="mid">取决于网络</td><td class="no">重</td><td class="yes">轻</td><td class="mid">中</td></tr>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <img class="leaf" src="assets/leaf.svg" alt=""/>
+  <div><b style="color:var(--text)">CSleaf</b> — Local-first LaTeX, for researchers who hate ceremony.</div>
+  <div style="margin-top:10px">
+    <a href="https://github.com/Jensen-Yao/CSleaf" target="_blank">GitHub</a> ·
+    <a href="https://github.com/Jensen-Yao/CSleaf/issues" target="_blank">Issues</a> ·
+    <a href="https://github.com/Jensen-Yao/CSleaf/blob/main/LICENSE" target="_blank">MIT License</a>
+  </div>
+  <div style="margin-top:18px">Made with 🌿 by <a href="https://github.com/Jensen-Yao" target="_blank">Jensen-Yao</a></div>
+</footer>
+
+<script>
+  // reveal on scroll
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }), { threshold: .12 });
+  document.querySelectorAll('.fade').forEach(el => io.observe(el));
+  // copy button
+  function cp(btn) {
+    navigator.clipboard.writeText('git clone https://github.com/Jensen-Yao/CSleaf.git\ncd CSleaf\nnpm run setup\nnpm start').then(() => {
+      btn.textContent = '已复制 ✓'; setTimeout(() => btn.textContent = '复制', 1600);
+    });
+  }
+</script>
+</body>
+</html>

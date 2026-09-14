@@ -1,0 +1,122 @@
+\documentclass[zihao=-4, a4paper, oneside]{ctexbook}
+\usepackage[margin=2.8cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{hyperref}
+
+\onehalfspacing
+
+% ==== 学校信息（替换为自己的） ====
+\newcommand{\university}{示例大学}
+\newcommand{\thesisname}{本科毕业设计（论文）}
+\newcommand{\thesistitle}{基于深度学习的示例研究}
+\newcommand{\thesisauthor}{张三}
+\newcommand{\thesisid}{2022010101}
+\newcommand{\thesisadvisor}{李四 教授}
+\newcommand{\thesismajor}{计算机科学与技术}
+\newcommand{\thesisdate}{2026年6月}
+
+\begin{document}
+
+% ================= 封面 =================
+\begin{titlepage}
+  \centering
+  \vspace*{2cm}
+  {\zihao{1}\heiti \university}\\[1cm]
+  {\zihao{2}\heiti \thesisname}\\[3cm]
+  \zihao{3}
+  \begin{tabular}{rl}
+    \textbf{题\hspace{2em}目：} & \thesistitle \\[0.5em]
+    \textbf{姓\hspace{2em}名：} & \thesisauthor \\[0.5em]
+    \textbf{学\hspace{2em}号：} & \thesisid \\[0.5em]
+    \textbf{专业：} & \thesismajor \\[0.5em]
+    \textbf{指导教师：} & \thesisadvisor \\
+  \end{tabular}
+  \vfill
+  {\zihao{3} \thesisdate}
+\end{titlepage}
+
+% ================= 摘要 =================
+\frontmatter
+\chapter{摘\quad 要}
+本文是一份中文毕业论文模板。摘要应概括研究背景、研究问题、
+所提方法、实验结果与主要结论，中文摘要一般不少于 500 字。
+
+\textbf{关键词：} 毕业论文；\LaTeX；模板
+
+\chapter{Abstract}
+This is the English abstract of the thesis. Replace it with a translation
+of your Chinese abstract.
+
+\textbf{Keywords:} thesis; LaTeX; template
+
+% ================= 目录 =================
+\tableofcontents
+
+% ================= 正文 =================
+\mainmatter
+
+\chapter{绪论}
+\section{研究背景与意义}
+介绍选题背景、国内外研究现状以及研究的意义。
+\section{研究内容}
+概述本文的主要研究内容与组织结构。
+
+\chapter{相关工作}
+\section{方法 A}
+综述相关研究工作~\cite{ref1}。
+\section{方法 B}
+补充其他相关工作~\cite{ref2}。
+
+\chapter{方法}
+\section{问题定义}
+给出问题的形式化定义：
+\begin{equation}
+  \min_{\theta} \; \frac{1}{N} \sum_{i=1}^{N} \ell\!\left(f_\theta(x_i), y_i\right).
+\end{equation}
+
+\section{模型设计}
+详细描述所提出的方法与模型结构。
+
+\chapter{实验与分析}
+\section{实验设置}
+描述数据集、评价指标、对比方法与实现细节。
+
+\begin{table}[htbp]
+  \centering
+  \caption{主要实验结果。}
+  \begin{tabular}{lcc}
+    \toprule
+    方法 & 准确率（\%） & F1 \\
+    \midrule
+    基线 & 81.2 & 0.79 \\
+    本文 & \textbf{88.1} & \textbf{0.87} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{结果分析}
+分析实验结果并讨论局限性。
+
+\chapter{总结与展望}
+总结全文工作，并展望未来研究方向。
+
+% ================= 参考文献 =================
+\backmatter
+\begin{thebibliography}{9}
+\bibitem{ref1}
+作者一, 作者二. 相关论文标题[J]. 期刊名称, 2024, 12(3): 45--58.
+\bibitem{ref2}
+Author A, Author B. Another related paper[C]//Proceedings of a Conference.
+2025: 100--110.
+\end{thebibliography}
+
+% ================= 附录 =================
+\appendix
+\chapter{补充材料}
+附录内容：推导细节、补充图表、代码清单等。
+
+\end{document}

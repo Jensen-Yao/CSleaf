@@ -1,0 +1,50 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage[margin=1.8cm]{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\definecolor{accent}{HTML}{1F7A5C}
+\pagestyle{empty}
+
+\titleformat{\section}{\large\bfseries\color{accent}}{}{0em}{}[\titlerule]
+\titlespacing{\section}{0pt}{10pt}{6pt}
+
+\newcommand{\entry}[2]{\noindent\textbf{#1} \hfill #2\par}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE\bfseries Alex Chen}\\[4pt]
+  \href{mailto:alex.chen@example.edu}{alex.chen@example.edu} $\cdot$
+  \href{https://github.com/yourname}{github.com/yourname} $\cdot$
+  \href{https://example.com}{example.com}
+\end{center}
+
+\section{Education}
+\entry{Ph.D.\ in Computer Science, Example University}{2024 -- 2027 (expected)}
+Research focus: machine learning systems.
+\entry{B.S.\ in Computer Science, Example Institute of Technology}{2020 -- 2024}
+GPA: 3.9 / 4.0, ranked 2/120.
+
+\section{Publications}
+\begin{itemize}[leftmargin=1.2em, itemsep=1pt]
+  \item A.~Chen, B.~Wang. ``An Example Paper on Efficient Training.''
+        \emph{Proc.\ of a Conference}, 2025.
+  \item A.~Chen et al. ``Another Example Paper on Systems.''
+        \emph{Journal of Examples}, 2024.
+\end{itemize}
+
+\section{Skills}
+\textbf{Languages:} Python, C++, Rust, \LaTeX \\
+\textbf{Frameworks:} PyTorch, JAX, CUDA \\
+\textbf{Tools:} Git, Linux, Docker, Slurm
+
+\section{Awards}
+\begin{itemize}[leftmargin=1.2em, itemsep=1pt]
+  \item National Scholarship, 2023
+  \item Gold Medal, ICPC Regional Contest, 2022
+\end{itemize}
+
+\end{document}

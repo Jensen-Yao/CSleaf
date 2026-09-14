@@ -1,0 +1,39 @@
+{
+  "name": "csleaf",
+  "version": "1.0.0",
+  "description": "CSleaf — a beautiful, local-first, Overleaf-like LaTeX editor for paper writing. Zero Docker, zero cloud, runs on your own machine.",
+  "license": "MIT",
+  "author": "Jensen-Yao",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jensen-Yao/CSleaf.git"
+  },
+  "keywords": [
+    "latex",
+    "overleaf",
+    "latex-editor",
+    "pdf-preview",
+    "paper-writing",
+    "academic-writing",
+    "monaco",
+    "local-first"
+  ],
+  "type": "commonjs",
+  "main": "server/index.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "setup": "npm install && npm install --prefix web && npm run build",
+    "dev:web": "npm run dev --prefix web",
+    "build": "npm run build --prefix web",
+    "start": "node server/index.js",
+    "dev": "node server/index.js --dev"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.16",
+    "express": "^4.21.2",
+    "multer": "^1.4.5-lts.1",
+    "ws": "^8.18.0"
+  }
+}

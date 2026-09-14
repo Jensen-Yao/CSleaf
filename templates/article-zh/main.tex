@@ -1,0 +1,80 @@
+\documentclass[zihao=-4, a4paper]{ctexart}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning}
+
+\title{\heiti 基于示例模板的中文学术论文写作}
+\author{张三 \and 李四}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+这是一份使用 \verb|ctexart| 文档类的中文学术论文模板，支持中文断行、
+标点压缩、章节标题与参考文献的中文习惯格式。摘要部分概述研究问题、
+方法与主要结论，通常长度为 200--300 字。
+\vspace{0.5em}\\
+\textbf{关键词：} 中文论文；\LaTeX；模板；学术写作
+\end{abstract}
+
+\section{引言}
+中文论文写作需要注意字体、字号与行距的排版规范。ctex 宏包自动处理了
+中文字体加载（Xe\LaTeX{} 引擎下默认使用系统字体），并提供了符合中文
+习惯的章节名称（如“\ref{sec:method} 节”）。
+
+数学公式排版：著名的高斯积分
+\begin{equation}
+  \int_{-\infty}^{+\infty} e^{-x^2}\,\mathrm{d}x = \sqrt{\pi}.
+\end{equation}
+
+\section{方法}\label{sec:method}
+图~\ref{fig:flow} 展示了方法流程图，使用 TikZ 绘制，无需外部图片文件。
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[node distance=1.5cm, every node/.style={font=\small}]
+    \node[draw, rounded corners, fill=teal!10, minimum width=2.4cm, minimum height=0.9cm] (data) {数据预处理};
+    \node[draw, rounded corners, fill=blue!10, minimum width=2.4cm, minimum height=0.9cm, right=of data] (train) {模型训练};
+    \node[draw, rounded corners, fill=orange!10, minimum width=2.4cm, minimum height=0.9cm, right=of train] (eval) {评估分析};
+    \draw[-{Stealth}] (data) -- (train);
+    \draw[-{Stealth}] (train) -- (eval);
+    \draw[-{Stealth}] (eval) to[bend left=25] node[above]{迭代} (data);
+  \end{tikzpicture}
+  \caption{示例流程图（TikZ 绘制）。}
+  \label{fig:flow}
+\end{figure}
+
+\section{实验}
+表~\ref{tab:result} 给出了示例实验结果，使用 \verb|booktabs| 三线表。
+
+\begin{table}[htbp]
+  \centering
+  \caption{示例实验结果对比。}
+  \label{tab:result}
+  \begin{tabular}{lcc}
+    \toprule
+    方法 & 准确率（\%） & F1 值 \\
+    \midrule
+    基线方法   & 81.2 & 0.79 \\
+    本文方法   & \textbf{88.1} & \textbf{0.87} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{结论}
+本文给出了一个可直接编译的中文论文模板。引用文献请使用
+\verb|\cite{}| 命令，如文献~\cite{tan2018}。
+
+\begin{thebibliography}{9}
+\bibitem{tan2018}
+谭浩强.
+\newblock \emph{C 程序设计}（第五版）.
+\newblock 北京：清华大学出版社, 2017.
+\end{thebibliography}
+
+\end{document}
