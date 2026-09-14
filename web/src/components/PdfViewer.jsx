@@ -329,36 +329,42 @@ function EmptyState({ t, running, result }) {
 /** Single thumbnail (lazy-rendered). */
 function PdfThumb({ doc, pageNo, active, onClick }) {
   const ref = React.useRef(null);
-  const [done, setDone] = React.useState(false);
+  const started = React.useRef(false);
 
   React.useEffect(() => {
+    let cancelled = false;
     const obs = new IntersectionObserver((entries) => {
-      if (entries.some(e => e.isIntersecting)) render();
-    }, { root: ref.current?.closest('.pdf-thumbs'), rootMargin: '400px 0px' });
+      if (entries.some(e => e.isIntersecting) && !started.current) {
+        started.current = true;
+        render(cancelled);
+      }
+    }, { rootMargin: '300px 0px' });
     obs.observe(ref.current);
-    return () => obs.disconnect();
+    return () => { cancelled = true; obs.disconnect(); };
   }, []);
 
-  async function render() {
+  async function render(cancelled) {
     try {
       const p = await doc.getPage(pageNo);
-      const canvas = ref.current.querySelector('canvas');
-      if (!canvas || canvas.width > 1) return;
+      if (cancelled) return;
+      const canvas = ref.current?.querySelector('canvas');
+      if (!canvas) return;
       const base = p.getViewport({ scale: 1 });
       const s = 118 / base.width;
       const vp = p.getViewport({ scale: s * renderMultiplier() });
       const css = p.getViewport({ scale: s });
-      canvas.width = vp.width; canvas.height = vp.height;
-      canvas.style.width = css.width + 'px'; canvas.style.height = css.height + 'px';
+      canvas.width = Math.floor(vp.width);
+      canvas.height = Math.floor(vp.height);
+      canvas.style.width = css.width + 'px';
+      canvas.style.height = css.height + 'px';
       await p.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
-      setDone(true);
     } catch {}
   }
 
   return (
     <div ref={ref} className={`pdf-thumb ${active ? 'active' : ''}`} onClick={onClick}>
       <div className="pdf-thumb-page" style={{ minHeight: 150 }}>
-        <canvas />
+        <canvas width="1" height="1" />
       </div>
       <span className="pdf-thumb-num">{pageNo}</span>
     </div>
