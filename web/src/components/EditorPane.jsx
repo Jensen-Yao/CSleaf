@@ -5,6 +5,7 @@ import { useStore } from '../lib/store';
 import { registerLatex } from '../lib/latex/language.js';
 import { countWords, parseOutline } from '../lib/latex/analyze.js';
 import { FileIcon, CloseIcon } from './Icons.jsx';
+import { EditorContextMenu, FindReplaceBar, openContextMenu } from './EditorContextMenu.jsx';
 
 // bundle monaco locally (offline-friendly, CDN-free)
 import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
@@ -69,6 +70,9 @@ function MonacoForTab({ tab }) {
   const lang = useStore(s => s.lang);
   const editorRef = useRef(null);
   const contentRef = useRef(tab.content);
+  const [ctxMenu, setCtxMenu] = useState(null);
+  const [findState, setFindState] = useState({ open: false, mode: 'find' });
+  const [ready, setReady] = useState(false);
   contentRef.current = tab.content;
 
   useEffect(() => { if (!registered) { registerLatex(monaco); registered = true; } }, []);
@@ -102,13 +106,33 @@ function MonacoForTab({ tab }) {
   }, [tab.path]);
 
   return (
-    <Editor
-      language={/\.bib$/i.test(tab.name) ? 'plaintext' : (/\.md$/i.test(tab.name) ? 'markdown' : (/\.sty$|\.cls$/i.test(tab.name) ? 'latex' : 'latex'))}
+    <div style={{ position: 'relative', height: '100%' }}>
+      <Editor
+        language={/\.bib$/i.test(tab.name) ? 'plaintext' : (/\.md$/i.test(tab.name) ? 'markdown' : 'latex')}
       theme={theme === 'dark' ? 'csleaf-dark' : 'csleaf-light'}
       value={contentRef.current}
       onMount={(editor, monacoInst) => {
         editorRef.current = editor;
         window.__csleaf_editor = editor;
+
+        // ---- localized UI: disable built-in (English) context menu & find widget ----
+        editor.updateOptions({ contextmenu: false });
+        try {
+          const fc = editor.getContribution('editor.contrib.findController');
+          if (fc) fc.start = () => {};   // neutralize built-in Ctrl+F/H widget
+        } catch {}
+        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyF, () => setFindState(s => ({ ...s, open: true, mode: 'find' })));
+        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyH, () => setFindState(s => ({ ...s, open: true, mode: 'replace' })));
+        const dom = editor.getDomNode();
+        if (dom) dom.addEventListener('contextmenu', openContextMenu(setCtxMenu, editor));
+        useStore.setState({
+          findBarApi: {
+            open: (mode) => setFindState(s => ({ ...s, open: true, mode })),
+            set: setFindState,
+          },
+        });
+        setReady(true);
+
         editor.onDidChangeCursorPosition((e) => {
           useStore.getState().setCursor({ line: e.position.lineNumber, col: e.position.column });
         });
@@ -157,5 +181,8 @@ function MonacoForTab({ tab }) {
         snippetsuggest: 'inline',
       }}
     />
+      <FindReplaceBar state={findState} setState={setFindState} editor={ready ? editorRef.current : null} />
+      <EditorContextMenu menu={ctxMenu} onClose={() => setCtxMenu(null)} editor={ready ? editorRef.current : null} />
+    </div>
   );
 }

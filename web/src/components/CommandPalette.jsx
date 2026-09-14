@@ -20,7 +20,17 @@ export default function CommandPalette({ mode }) {
     return [
       { id: 'compile', label: t('cmdCompile'), Icon: PlayIcon, run: () => s.compile(), hint: 'Ctrl+Enter' },
       { id: 'saveall', label: t('cmdSaveAll'), Icon: FileIcon, run: () => s.saveAll(), hint: 'Ctrl+S' },
-      { id: 'newfile', label: t('cmdNewFile'), Icon: FilePlusIcon, run: () => import('./SideBar.jsx').then(() => s.refreshTree()) },
+      { id: 'newfile', label: t('cmdNewFile'), Icon: FilePlusIcon, run: () => {
+        s.openDialog({
+          kind: 'input', title: t('newFile'), label: t('name'), placeholder: 'new-section.tex',
+          okText: t('create'),
+          onOk: async (name) => {
+            if (!name) return;
+            try { await useStore.getState().createEntry(name, 'file'); }
+            catch (e) { useStore.getState().toast(e.message, 'error'); }
+          },
+        });
+      } },
       { id: 'sidebar', label: t('cmdToggleSidebar'), Icon: SidebarIcon, run: () => s.togglePanel('sidebar'), hint: 'Ctrl+B' },
       { id: 'preview', label: t('cmdTogglePreview'), Icon: PanelRightIcon, run: () => s.togglePanel('preview'), hint: 'Ctrl+Shift+E' },
       { id: 'log', label: t('output'), Icon: FileIcon, run: () => s.togglePanel('log'), hint: 'Ctrl+J' },

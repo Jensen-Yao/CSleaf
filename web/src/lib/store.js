@@ -14,10 +14,15 @@ let saveTimers = new Map(); // path -> timer
 let compileTimer = null;
 
 export const useStore = create((set, get) => ({
-  // ---------- modals ----------
-  modal: null, // 'settings' | 'palette' | 'quickopen' | 'shortcuts' | null
+  // ---------- modals & dialogs ----------
+  modal: null, // 'settings' | 'palette' | 'quickopen' | 'shortcuts' | 'stats' | null
   openModal: (modal) => set({ modal }),
   closeModal: () => set({ modal: null }),
+
+  // bilingual in-app dialogs (replace native prompt/confirm)
+  dialog: null, // {kind:'input'|'confirm', title, label?, value?, placeholder?, okText?, danger?, onOk(value)}
+  openDialog: (dialog) => set({ dialog }),
+  closeDialog: () => set({ dialog: null }),
 
   // ---------- ui ----------
   lang: detectLang(),
@@ -174,12 +179,19 @@ export const useStore = create((set, get) => ({
       return { tabs: next, activePath: activate ? path : s.activePath };
     });
   },
-  closeTab: (path) => {
+  closeTab: (path, force = false) => {
     set((s) => {
       const idx = s.tabs.findIndex(t => t.path === path);
       if (idx === -1) return {};
       const tab = s.tabs[idx];
-      if (tab.dirty && !confirm(`${path} ${s.lang === 'zh' ? '有未保存的修改，确定关闭？' : 'has unsaved changes. Close anyway?'}`)) return {};
+      if (tab.dirty && !force) {
+        s.openDialog({
+          kind: 'confirm', title: s.t('closeUnsaved'), danger: true,
+          message: `${path} ${s.lang === 'zh' ? '有未保存的修改，关闭后将丢失。' : 'has unsaved changes that will be lost.'}`,
+          onOk: () => useStore.getState().closeTab(path, true),
+        });
+        return {};
+      }
       const next = s.tabs.filter(t => t.path !== path);
       const activePath = s.activePath === path
         ? (next[Math.min(idx, next.length - 1)]?.path ?? null)

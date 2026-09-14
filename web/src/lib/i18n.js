@@ -111,6 +111,24 @@ const dict = {
   // statistics
   statsTitle: { zh: '项目统计', en: 'Project statistics' },
   cmdStats: { zh: '查看项目统计', en: 'Show project statistics' },
+
+  // editor context menu & find/replace
+  cut: { zh: '剪切', en: 'Cut' },
+  copy: { zh: '复制', en: 'Copy' },
+  paste: { zh: '粘贴', en: 'Paste' },
+  selectAll: { zh: '全选', en: 'Select all' },
+  find: { zh: '查找', en: 'Find' },
+  replace: { zh: '替换', en: 'Replace' },
+  replaceWith: { zh: '替换为', en: 'Replace with' },
+  replaceThis: { zh: '替换', en: 'Replace' },
+  replaceAll: { zh: '全部替换', en: 'Replace all' },
+  prevMatch: { zh: '上一个', en: 'Previous' },
+  nextMatch: { zh: '下一个', en: 'Next' },
+  caseSensitive: { zh: '区分大小写', en: 'Match case' },
+  closeUnsaved: { zh: '关闭未保存的标签页', en: 'Close unsaved tab' },
+  confirmDelete: { zh: '确认删除', en: 'Confirm delete' },
+  confirmDeleteMsg: { zh: '确定要删除吗？此操作不可恢复。', en: 'Delete this item? This cannot be undone.' },
+  create: { zh: '创建', en: 'Create' },
 };
 
 export function makeT(lang) {

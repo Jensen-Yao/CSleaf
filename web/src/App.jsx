@@ -6,6 +6,7 @@ import SettingsModal from './components/SettingsModal.jsx';
 import CommandPalette from './components/CommandPalette.jsx';
 import ShortcutsModal from './components/ShortcutsModal.jsx';
 import StatsModal from './components/StatsModal.jsx';
+import DialogHost from './components/DialogHost.jsx';
 import { CheckIcon, AlertIcon, WarnIcon } from './components/Icons.jsx';
 
 export default function App() {
@@ -55,6 +56,7 @@ function GlobalModals() {
       {modal === 'quickopen' && <CommandPalette mode="files" />}
       {modal === 'shortcuts' && <ShortcutsModal />}
       {modal === 'stats' && <StatsModal />}
+      <DialogHost />
     </>
   );
 }

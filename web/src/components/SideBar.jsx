@@ -70,11 +70,20 @@ function FileTreePanel() {
 async function NewEntryPrompt(type, parentPath) {
   const s = useStore.getState();
   const t = s.t;
-  const name = prompt(type === 'file' ? `${t('newFile')} — ${t('name')}` : `${t('newFolder')} — ${t('name')}`);
-  if (!name) return;
-  const path = parentPath ? `${parentPath}/${name}` : name;
-  try { await s.createEntry(path, type); }
-  catch (e) { s.toast(e.message, 'error'); }
+  const lang = s.lang;
+  s.openDialog({
+    kind: 'input',
+    title: type === 'file' ? t('newFile') : t('newFolder'),
+    label: t('name'),
+    placeholder: type === 'file' ? 'new-section.tex' : 'figures',
+    okText: lang === 'zh' ? '创建' : 'Create',
+    onOk: async (name) => {
+      if (!name) return;
+      const path = parentPath ? `${parentPath}/${name}` : name;
+      try { await s.createEntry(path, type); }
+      catch (e) { s.toast(e.message, 'error'); }
+    },
+  });
 }
 
 function fileIconClass(name) {
@@ -97,20 +106,29 @@ function TreeNode({ node, depth }) {
   async function onEntryAction(action, node, parentPath) {
     const st = useStore.getState();
     setCtx(null);
-    try {
-      if (action === 'rename') {
-        const newName = prompt(t('rename'), node.name);
-        if (newName) await st.renameEntry(node.path, newName);
-      } else if (action === 'delete') {
-        if (confirm(`${t('delete')} ${node.path}?`)) await st.deleteEntry(node.path);
-      } else if (action === 'newfile') {
-        NewEntryPrompt('file', isRoot ? '' : node.path);
-      } else if (action === 'newfolder') {
-        NewEntryPrompt('folder', isRoot ? '' : node.path);
-      } else if (action === 'setmain') {
-        await st.setMainFile(node.path);
-      }
-    } catch (e) { st.toast(e.message, 'error'); }
+    const lang = st.lang;
+    if (action === 'rename') {
+      st.openDialog({
+        kind: 'input', title: t('rename'), value: node.name, okText: t('rename'),
+        onOk: async (newName) => {
+          if (!newName || newName === node.name) return;
+          try { await st.renameEntry(node.path, newName); }
+          catch (e) { st.toast(e.message, 'error'); }
+        },
+      });
+    } else if (action === 'delete') {
+      st.openDialog({
+        kind: 'confirm', title: t('confirmDelete'), danger: true, okText: t('delete'),
+        message: `${t('confirmDeleteMsg')} (${node.path})`,
+        onOk: async () => { try { await st.deleteEntry(node.path); } catch (e) { st.toast(e.message, 'error'); } },
+      });
+    } else if (action === 'newfile') {
+      NewEntryPrompt('file', isRoot ? '' : node.path);
+    } else if (action === 'newfolder') {
+      NewEntryPrompt('folder', isRoot ? '' : node.path);
+    } else if (action === 'setmain') {
+      await st.setMainFile(node.path);
+    }
   }
 
   if (isDir) {

@@ -110,13 +110,19 @@ export default function HomePage() {
                 </div>
                 <div className="actions" onClick={e => e.stopPropagation()}>
                   <button className="icon-btn" title={t('rename')} onClick={() => {
-                    const name = prompt(t('rename'), p.name);
-                    if (name) renameProject(p.id, name);
+                    openDialog({
+                      kind: 'input', title: t('rename'), value: p.name, okText: t('rename'),
+                      onOk: (name) => { if (name) renameProject(p.id, name); },
+                    });
                   }}><EditIcon /></button>
                   <button className="icon-btn" title={t('duplicate')} onClick={() => duplicateProject(p.id)}><CopyIcon /></button>
                   <a className="icon-btn" title={t('export')} href={`/api/projects/${p.id}/export`} download><DownloadIcon /></a>
                   <button className="icon-btn" title={t('delete')} onClick={() => {
-                    if (confirm(t('confirmDeleteProject'))) removeProject(p.id);
+                    openDialog({
+                      kind: 'confirm', title: t('confirmDelete'), danger: true,
+                      message: `${t('confirmDeleteMsg')} (${p.name})`, okText: t('delete'),
+                      onOk: () => removeProject(p.id),
+                    });
                   }}><TrashIcon /></button>
                 </div>
               </div>
