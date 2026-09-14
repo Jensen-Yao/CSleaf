@@ -1,0 +1,64 @@
+% Academic poster template (tikzposter, A0 portrait).
+\documentclass[25pt, a0paper, portrait, margin=10mm, innermargin=15mm, blockverticalspace=10mm]{tikzposter}
+
+\usepackage{booktabs}
+
+\title{An Academic Poster Template}
+\author{First Author, Second Author}   % note: tikzposter titles break with \and
+\institute{Example University}
+
+\usetheme{Default}
+\usecolorstyle{Britain}
+
+\begin{document}
+
+\maketitle
+
+\begin{columns}
+  \column{0.5}
+  \block{1 \; Motivation}{
+    \begin{itemize}
+      \item Posters summarize a paper at a glance
+      \item \texttt{tikzposter} handles layout, blocks, and colors
+      \item Replace this text with your motivation
+    \end{itemize}
+    \vspace{1cm}
+  }
+
+  \block{2 \; Method}{
+    \begin{tikzfigure}
+      \begin{tikzpicture}[every node/.style={font=\large}]
+        \node[draw, rounded corners, fill=blue!15, minimum width=6cm, minimum height=2cm] (a) {Input};
+        \node[draw, rounded corners, fill=green!15, minimum width=6cm, minimum height=2cm, right=3cm of a] (b) {Model};
+        \node[draw, rounded corners, fill=orange!15, minimum width=6cm, minimum height=2cm, right=3cm of b] (c) {Output};
+        \draw[-latex, line width=2pt] (a) -- (b);
+        \draw[-latex, line width=2pt] (b) -- (c);
+      \end{tikzpicture}
+    \end{tikzfigure}
+  }
+
+  \column{0.5}
+
+  \block{3 \; Experiments}{
+    \begin{tabular}{lcc}
+      \toprule
+      Method & Acc. (\%) & F1 \\
+      \midrule
+      Baseline & 81.2 & 0.79 \\
+      Ours     & \textbf{88.1} & \textbf{0.87} \\
+      \bottomrule
+    \end{tabular}
+    \vspace{1cm}
+  }
+
+  \block{4 \; Conclusions \& Contact}{
+    \begin{itemize}
+      \item One-line takeaway of your work
+      \item Contact: \texttt{first@example.edu}
+      \item QR code / project link
+    \end{itemize}
+    \vspace{1cm}
+  }
+\end{columns}
+
+\end{document}

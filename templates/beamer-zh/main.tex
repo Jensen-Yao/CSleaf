@@ -1,0 +1,70 @@
+\documentclass{ctexbeamer}
+\usecolortheme{spruce}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+
+\usepackage{booktabs}
+
+\title[简短标题]{中文 Beamer 汇报模板}
+\subtitle{用 \LaTeX{} 做学术报告}
+\author{汇报人：张三}
+\institute{示例大学 · 计算机学院}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{目录}
+  \tableofcontents
+\end{frame}
+
+\section{研究背景}
+
+\begin{frame}{为什么用 Beamer 写中文幻灯片？}
+  \begin{itemize}
+    \item \texttt{ctexbeamer} 自动处理中文字体（Xe\LaTeX{} 引擎）
+    \item 数学公式、代码、图表与论文完全一致
+    \item 纯文本格式，Git 友好，随时改随时编
+  \end{itemize}
+  \begin{block}{一句话}
+    改一处全局生效，不用再手动对齐文本框。
+  \end{block}
+\end{frame}
+
+\section{方法与实验}
+
+\begin{frame}{方法概览}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{itemize}
+        \item 输入：数据 $x \in \mathbb{R}^n$
+        \item 模型：$f_\theta(x)$
+        \item 目标：$\min_\theta \mathcal{L}(\theta)$
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{table}
+        \centering
+        \begin{tabular}{lcc}
+          \toprule
+          方法 & 准确率 & F1 \\
+          \midrule
+          基线 & 81.2 & 0.79 \\
+          本文 & \textbf{88.1} & \textbf{0.87} \\
+          \bottomrule
+        \end{tabular}
+      \end{table}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \centering
+  {\LARGE 谢谢！}\\[1em]
+  欢迎批评指正
+\end{frame}
+
+\end{document}

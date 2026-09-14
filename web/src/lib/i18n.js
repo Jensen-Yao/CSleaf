@@ -99,6 +99,18 @@ const dict = {
   cmdClean: { zh: '清理辅助文件', en: 'Clean auxiliary files' },
   cmdSettings: { zh: '打开设置', en: 'Open settings' },
   cmdShortcuts: { zh: '查看快捷键', en: 'Show shortcuts' },
+
+  // pdf viewer extras
+  thumbnails: { zh: '缩略图', en: 'Thumbnails' },
+  search: { zh: '在 PDF 中搜索', en: 'Search in PDF' },
+  findPlaceholder: { zh: '在 PDF 中查找…（Enter 下一个）', en: 'Find in PDF… (Enter for next)' },
+  noMatches: { zh: '无匹配', en: 'No matches' },
+  pagesUnit: { zh: '页', en: 'pages' },
+  fitPage: { zh: '适应页面', en: 'Fit page' },
+
+  // statistics
+  statsTitle: { zh: '项目统计', en: 'Project statistics' },
+  cmdStats: { zh: '查看项目统计', en: 'Show project statistics' },
 };
 
 export function makeT(lang) {

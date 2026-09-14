@@ -36,7 +36,7 @@
 
 **项目管理**
 - 🗂️ 项目画廊：创建 / 重命名 / 复制 / 删除 / 导出 ZIP / 从 ZIP 导入（支持 GitHub 下载的项目压缩包）
-- 📚 8 个开箱即用的模板：中英文论文、IEEE 会议、Beamer、毕业论文、简历、数学笔记……全部经过真实编译验证
+- 📚 19 个开箱即用的模板：中英文论文、IEEE 会议/期刊、ACM、Springer LNCS、Elsevier、Beamer（中英）、毕业论文、实验报告、组会汇报、审稿回复、作业、海报、简历、数学笔记……全部经过真实编译验证
 
 **编辑器（Monaco）**
 - 📝 LaTeX 语法高亮、括号匹配、代码折叠（`\begin{}...\end{}` 区域）
@@ -50,14 +50,17 @@
 **编译与预览**
 - ⚡ 一键编译：支持 `latexmk`（自动多次运行 + BibTeX）/ `pdflatex` / `xelatex` / `lualatex`
 - 🔁 保存后自动编译（可关闭），PDF 原位刷新不闪屏
+- 🖥️ 高清 PDF 渲染：2x 超采样，任何缩放级别与高分屏下文字都锐利
+- 🖼️ **PDF 缩略图侧栏**：整篇文档一目了然，点击直达
+- 🔎 **PDF 内搜索**：匹配计数、上/下一个、高亮定位（Enter / Shift+Enter）
 - 🧭 **SyncTeX 正反向跳转**：`Alt+S` 从光标定位 PDF；双击 PDF 反向跳回源码
 - 🐞 错误/警告面板：解析 `.log` 精确到文件与行号，点击即达；未安装宏包时给出提示
-- 📄 PDF 预览：缩放、页码跳转、按宽度适配、下载
+- 📄 PDF 预览：缩放、页码跳转、适应宽度/适应页面、总页数显示、下载
 
 **界面与体验**
 - 🌗 深色 / 浅色双主题，叶绿主色调，可拖拽调整三栏布局
 - 🌏 中英双语界面，一键切换
-- 📊 状态栏：TeX 发行版检测、中英文字数统计、光标位置、自动编译开关
+- 📊 状态栏：TeX 发行版检测、字数统计（点击打开**项目统计面板**：全项目中英文字数、章节/图表/公式/引用计数、上次编译状态）、光标位置、自动编译开关
 - 🧹 一键清理辅助文件（`.aux/.log/.bbl/...`），文件树自动隐藏编译产物
 
 ## 🚀 快速开始 Quick Start
@@ -87,18 +90,29 @@ npm start         # 启动 → 自动打开 http://127.0.0.1:4513
 
 > 端口可用 `PORT=8080 npm start` 修改；论文数据保存在 `workspace/` 目录（已 gitignore，不会误提交）。
 
-## 🎓 内置模板 Templates
+## 🎓 内置模板 Templates（19 个，全部真机编译验证）
 
 | 模板 | 引擎 | 说明 |
 |---|---|---|
-| Blank | latexmk | 最小可编译文档 |
 | 学术文章 Academic Article | latexmk | 章节 + TikZ 图 + 三线表 + 参考文献 |
 | 中文学术论文 | xelatex | ctexart：摘要 / 关键词 / 图表 / 参考文献 |
-| IEEE 会议论文 | latexmk | IEEEtran 双栏，含 figures & tables |
+| IEEE 会议论文 | latexmk | IEEEtran 会议双栏 |
+| IEEE 期刊论文 | latexmk | IEEEtran 期刊模式，含 thanks 脚注 |
+| ACM 会议论文 | latexmk | acmart sigconf（nonacm 可选） |
+| Springer LNCS | latexmk | LNCS 单栏，多机构作者 |
+| Elsevier 期刊 | latexmk | elsarticle frontmatter + 关键词 |
 | Beamer 演示 | latexmk | 16:9 学术幻灯片 |
+| 中文 Beamer 汇报 | xelatex | ctexbeamer：目录 / 分栏 / 表格 |
 | 中文毕业论文 | xelatex | ctexbook：封面 / 摘要 / 目录 / 多章 / 附录 |
+| 英文学位论文 | latexmk | book 类：标题页 / TOC / 图表清单 / 附录 |
+| 实验报告 | xelatex | 目的 / 原理 / 步骤 / 数据表 / 结论 |
+| 组会汇报 | xelatex | 周报式：进展 / 问题 / 实验记录 / 计划 |
+| 审稿回复信 | latexmk | 逐条 Comment / Response，回复高亮 |
+| 课程作业 | latexmk | Problem–Solution 环境 + 页眉 + 总页码 |
+| 学术海报 | latexmk | tikzposter A0 竖版多栏 |
 | 英文简历 Academic CV | latexmk | 单页学术简历 |
 | 数学笔记 | latexmk | amsthm 定理环境 + 证明 |
+| Blank | latexmk | 最小可编译文档 |
 
 ## ⌨️ 快捷键 Shortcuts
 

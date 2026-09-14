@@ -5,6 +5,7 @@ import Workspace from './components/Workspace.jsx';
 import SettingsModal from './components/SettingsModal.jsx';
 import CommandPalette from './components/CommandPalette.jsx';
 import ShortcutsModal from './components/ShortcutsModal.jsx';
+import StatsModal from './components/StatsModal.jsx';
 import { CheckIcon, AlertIcon, WarnIcon } from './components/Icons.jsx';
 
 export default function App() {
@@ -38,12 +39,22 @@ export default function App() {
 function GlobalModals() {
   // opened via store flags below
   const modal = useStore(s => s.modal);
+  const closeModal = useStore(s => s.closeModal);
+
+  useEffect(() => {
+    if (!modal) return;
+    const onKey = (e) => { if (e.key === 'Escape') closeModal(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [modal]);
+
   return (
     <>
       {modal === 'settings' && <SettingsModal />}
       {modal === 'palette' && <CommandPalette mode="commands" />}
       {modal === 'quickopen' && <CommandPalette mode="files" />}
       {modal === 'shortcuts' && <ShortcutsModal />}
+      {modal === 'stats' && <StatsModal />}
     </>
   );
 }

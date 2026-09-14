@@ -1,0 +1,64 @@
+\documentclass[journal]{IEEEtran}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+\title{An IEEE Journal Paper Template}
+\author{First~Author,~Second~Author,~and~Third~Author%
+\thanks{Manuscript received ~; This work was supported by ~.%
+\newline \textit{First Author} is with the Department of Computer Science,
+Example University (e-mail: first@example.edu).}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+An abstract for the IEEE Transactions style. Replace with a concise summary
+of your contribution, methods, and results in roughly 150--250 words.
+\end{abstract}
+
+\begin{IEEEkeywords}
+LaTeX, IEEEtran, journal, template
+\end{IEEEkeywords}
+
+\section{Introduction}
+Journal papers demand a thorough literature review and an in-depth
+evaluation. This template provides the IEEE Transactions two-column
+layout~\cite{ref1}.
+
+\section{Related Work}
+Discuss prior art and position your contribution~\cite{ref2}.
+
+\section{Proposed Method}
+Define the optimization problem:
+\begin{equation}
+  \min_{\theta} \; \mathbb{E}_{(x,y)\sim\mathcal{D}}
+  \big[\ell(f_\theta(x), y)\big] + \lambda\Omega(\theta).
+\end{equation}
+
+\section{Experiments}
+\begin{table}[!t]
+  \centering
+  \caption{Example results.}
+  \label{tab:r}
+  \begin{tabular}{lcc}
+    \toprule
+    Method & Metric-1 & Metric-2 \\
+    \midrule
+    Baseline & 81.2 & 0.79 \\
+    Ours     & \textbf{88.1} & \textbf{0.87} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+Table~\ref{tab:r} summarizes the comparison.
+
+\section{Conclusion}
+Summarize findings and future work.
+
+\begin{thebibliography}{9}
+\bibitem{ref1} IEEE Editorial Staff, ``Author guidelines,'' \emph{IEEE Trans.}, 2024.
+\bibitem{ref2} A. Author, B. Author, ``A related article,'' in \emph{Proc. Conf.}, 2023.
+\end{thebibliography}
+
+\end{document}

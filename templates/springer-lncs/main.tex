@@ -1,0 +1,55 @@
+% Springer LNCS (Lecture Notes in Computer Science) template.
+\documentclass{llncs}
+
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{graphicx}
+
+\begin{document}
+
+\title{A Springer LNCS Template}
+\author{First Author\inst{1} \and Second Author\inst{2}}
+\institute{\inst{1} Example University, Beijing, China
+\email{first@example.edu}
+\and
+\inst{2} Example Institute, Shanghai, China
+\email{second@example.edu}}
+
+\maketitle
+
+\begin{abstract}
+LNCS papers use a single-column layout with a strict page limit. This
+template demonstrates title/author blocks, sections, and a references
+list in Springer style.
+\end{abstract}
+
+\section{Introduction}
+LNCS is the standard format for many CS conferences and workshops.
+Citations use the bracket style~\cite{spr_demo}.
+
+\section{Method}
+Present your approach. Math works as usual:
+\begin{equation}
+  \mathcal{L} = \sum_{i=1}^{N} \ell(f_\theta(x_i), y_i).
+\end{equation}
+
+\section{Results}
+\begin{table}[h]
+  \centering
+  \caption{Example results.}
+  \begin{tabular}{lcc}
+    \toprule
+    Method & Acc. & F1 \\
+    \midrule
+    Baseline & 81.2 & 0.79 \\
+    Ours     & \textbf{88.1} & \textbf{0.87} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{thebibliography}{1}
+\bibitem{spr_demo}
+A. Author, B. Author: An example article. In: Proc. of a Conference, pp. 1--10 (2025)
+\end{thebibliography}
+
+\end{document}

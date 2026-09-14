@@ -1,0 +1,66 @@
+% Elsevier journal template (elsarticle).
+\documentclass[preprint,12pt]{elsarticle}
+
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{graphicx}
+
+\journal{Example Journal}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{An Elsevier Journal Article Template}
+
+\author[inst1]{First Author\corref{cor1}}
+\ead{first@example.edu}
+\cortext[cor1]{Corresponding author}
+\affiliation[inst1]{organization={Example University}, city={Beijing}, country={China}}
+
+\author[inst2]{Second Author}
+\ead{second@example.edu}
+\affiliation[inst2]{organization={Example Institute}, city={Shanghai}, country={China}}
+
+\begin{abstract}
+Elsevier journals use the \texttt{elsarticle} class. The front matter
+block collects the title, authors, affiliations, and abstract.
+\end{abstract}
+
+\begin{keyword}
+LaTeX \sep Elsevier \sep template
+\end{keyword}
+
+\end{frontmatter}
+
+\section{Introduction}
+Elsevier's two options \texttt{preprint} (single column) and
+\texttt{twocolumn} control the layout~\cite{els_demo}.
+
+\section{Method}
+Describe your method here.
+
+\section{Results}
+\begin{table}[h]
+  \centering
+  \caption{Example results.}
+  \begin{tabular}{lcc}
+    \toprule
+    Method & Acc. & F1 \\
+    \midrule
+    Baseline & 81.2 & 0.79 \\
+    Ours     & \textbf{88.1} & \textbf{0.87} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Conclusion}
+Conclude.
+
+\bibliographystyle{elsarticle-num}
+\begin{thebibliography}{1}
+\bibitem{els_demo}
+A. Author, B. Author, An example article, Example Journal 1 (1) (2025) 1--10.
+\end{thebibliography}
+
+\end{document}

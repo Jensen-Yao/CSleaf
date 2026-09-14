@@ -1,0 +1,58 @@
+\documentclass[zihao=-4, a4paper]{ctexart}
+\usepackage[margin=2.4cm]{geometry}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{xcolor}
+
+\definecolor{leafgreen}{HTML}{0E9F6E}
+\titleformat{\section}{\large\bfseries\color{leafgreen}}{}{0em}{}[\vspace{-2pt}\rule{\textwidth}{0.4pt}]
+
+\newcommand{\weekinfo}{第~3~周组会汇报}
+\newcommand{\reporter}{汇报人：张三 \quad 导师：李四 教授}
+
+\begin{document}
+
+\begin{center}
+  {\zihao{3}\heiti \weekinfo}\\[0.5em]
+  {\zihao{-4} \reporter}\\[0.2em]
+  {\zihao{-4} \today}
+\end{center}
+
+\section{本周工作进展}
+\begin{itemize}[leftmargin=1.5em]
+  \item 完成了基线模型的复现，在验证集上指标与论文一致（准确率 81.2\%）；
+  \item 搭建了数据增强流水线，训练吞吐提升约 30\%；
+  \item 阅读了 \textit{Attention Is All You Need} 与两篇 follow-up，整理了笔记。
+\end{itemize}
+
+\section{遇到的问题}
+\begin{enumerate}[label=\textbf{Q\arabic*.}, leftmargin=2.2em]
+  \item 大学习率下训练前期震荡明显，warmup 步数如何选取？
+  \item 多卡训练时显存不均衡，可能的瓶颈在哪里？
+\end{enumerate}
+
+\section{实验数据}
+\begin{table}[h]
+  \centering
+  \caption{本周实验记录。}
+  \begin{tabular}{lccc}
+    \toprule
+    实验 & 学习率 & Top-1 (\%) & 备注 \\
+    \midrule
+    baseline      & $1e{-3}$ & 81.2 & 复现论文 \\
+    + warmup 1k   & $1e{-3}$ & 82.5 & 震荡缓解 \\
+    + aug         & $1e{-3}$ & 84.1 & 本周重点 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{下周计划}
+\begin{itemize}[leftmargin=1.5em]
+  \item 尝试 cosine schedule 与 EMA，目标 Top-1 $\ge$ 86\%；
+  \item 开始写实验记录脚本，统一日志格式；
+  \item 精读一篇 2026 年新论文并做分享。
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,90 @@
+% English thesis template (book class) — adapt to your university's format.
+\documentclass[12pt, oneside]{book}
+\usepackage[a4paper, margin=2.6cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+\onehalfspacing
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\leftmark}
+\fancyfoot[C]{\thepage}
+
+\title{An Example Thesis: \\ \large A Template Written in \LaTeX}
+\author{Your Name}
+\date{September 2026}
+
+\begin{document}
+
+\frontmatter
+\begin{titlepage}
+  \centering
+  \vspace*{3cm}
+  {\LARGE\bfseries An Example Thesis}\\[1cm]
+  {\large A Template Written in \LaTeX}\\[2cm]
+  {\large Your Name}\\[0.5em]
+  {\large Supervised by Prof.~Someone}\\[2cm]
+  {\large A dissertation submitted for the degree of}\\[0.3em]
+  {\large Doctor of Philosophy}\\[1cm]
+  {\large September 2026}
+\end{titlepage}
+
+\chapter*{Abstract}
+Replace with your abstract. State the problem, your approach, the key
+results, and the significance.
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\mainmatter
+
+\chapter{Introduction}
+Motivate the problem, state your research questions and contributions,
+and outline the thesis structure.
+
+\chapter{Background}
+Review the concepts your work builds upon.
+
+\chapter{Method}
+\section{Problem Formulation}
+\begin{equation}
+  \min_{\theta} \; \frac{1}{N}\sum_{i=1}^{N}
+  \ell\!\left(f_\theta(x_i), y_i\right).
+\end{equation}
+
+\section{Approach}
+Describe your method in detail.
+
+\chapter{Experiments}
+\begin{table}[h]
+  \centering
+  \caption{Main results.}
+  \begin{tabular}{lcc}
+    \toprule
+    Method & Metric-1 & Metric-2 \\
+    \midrule
+    Baseline & 81.2 & 0.79 \\
+    Ours     & \textbf{88.1} & \textbf{0.87} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\chapter{Conclusion}
+Summarize contributions and discuss limitations and future work.
+
+\backmatter
+\begin{thebibliography}{9}
+\bibitem{t1} A. Author, \emph{An Example Book}. Publisher, 2024.
+\bibitem{t2} B. Author, ``An example article,'' \emph{Journal of Examples}, 2025.
+\end{thebibliography}
+
+\appendix
+\chapter{Additional Material}
+Appendices go here.
+
+\end{document}

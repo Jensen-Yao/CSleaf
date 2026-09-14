@@ -43,7 +43,8 @@ export default function StatusBar() {
       <span className="item" onClick={() => openModal('shortcuts')} style={{ cursor: 'pointer' }}>
         Ln {cursor.line}, Col {cursor.col}
       </span>
-      <span className="item">
+      <span className="item clickable" onClick={() => openModal('stats')}
+        title={`${t('statsTitle')} — ${t('wordCount')}`}>
         {t('wordCount')} {lang === 'zh'
           ? `${wordCount.cjk + wordCount.words}`
           : wordCount.cjk ? `${wordCount.cjk} CJK · ${wordCount.words} words` : `${wordCount.words}`}

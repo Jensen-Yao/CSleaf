@@ -1,0 +1,62 @@
+\documentclass[zihao=-4, a4paper]{ctexart}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{setspace}
+
+\onehalfspacing
+
+% ===== 课程信息（按需修改）=====
+\newcommand{\coursename}{课程名称：数据结构}
+\newcommand{\labtitle}{实验一：线性表的应用}
+\newcommand{\studentname}{姓名：张三 \quad 学号：2022010101}
+\newcommand{\labdate}{日期：\today}
+
+\begin{document}
+
+\begin{center}
+  {\zihao{3}\heiti \labtitle}\\[0.6em]
+  {\zihao{-4} \coursename}\\[0.3em]
+  {\zihao{-4} \studentname}\\[0.3em]
+  {\zihao{-4} \labdate}
+\end{center}
+
+\section{实验目的}
+简述本次实验要掌握的知识点与能力，例如：掌握线性表的顺序存储与链式存储
+实现，理解两种结构在插入删除操作上的复杂度差异。
+
+\section{实验原理}
+简述实验涉及的理论基础。例如顺序表按位置访问时间为 $O(1)$，
+插入删除平均移动一半元素为 $O(n)$；单链表插入删除只需修改指针，
+但查找为 $O(n)$。
+
+\section{实验内容与步骤}
+\begin{enumerate}
+  \item 实现顺序表的基本操作（初始化、插入、删除、按位查找）；
+  \item 实现单链表的基本操作；
+  \item 分别在两种结构上执行 $10^4$ 次随机插入/删除，记录耗时；
+  \item 对比分析实验数据。
+\end{enumerate}
+
+\section{实验结果}
+\begin{table}[h]
+  \centering
+  \caption{两种线性表操作耗时对比（ms）。}
+  \begin{tabular}{lcc}
+    \toprule
+    操作 & 顺序表 & 单链表 \\
+    \midrule
+    随机插入 & 12.4 & 3.1 \\
+    随机删除 & 11.8 & 3.0 \\
+    按位查找 & 0.1 & 8.9 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{结果分析与结论}
+结合数据说明结构选择与场景的关系，总结实验收获，也可以提出改进方向
+（如双向链表、静态链表等）。
+
+\end{document}

@@ -43,3 +43,6 @@ export const PanelRightIcon = (p) => <I {...p}><rect x="3" y="3" width="18" heig
 export const BroomIcon = (p) => <I {...p}><path d="m19 21-8-8"/><path d="m15 5 4 4"/><path d="M19 5 5 19"/><path d="M9.5 9.5 5 14l5 5 4.5-4.5"/></I>;
 export const LangIcon = (p) => <I {...p}><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></I>;
 export const StarIcon = (p) => <I {...p}><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></I>;
+export const SearchIcon = (p) => <I {...p}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></I>;
+export const ChevronsIcon = (p) => <I {...p}><path d="m7 15 5 5 5-5M7 9l5-5 5 5"/></I>;
+export const ChartIcon = (p) => <I {...p}><path d="M3 3v18h18"/><path d="M7 16v-5M12 16V8M17 16v-8"/></I>;

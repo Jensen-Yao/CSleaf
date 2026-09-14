@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useStore } from '../lib/store';
 import {
   PlayIcon, SettingsIcon, SunIcon, LangIcon, FilePlusIcon, DownloadIcon,
-  BroomIcon, HomeIcon, KeyboardIcon, SidebarIcon, PanelRightIcon, FileIcon, CommandIcon, UploadIcon,
+  BroomIcon, HomeIcon, KeyboardIcon, SidebarIcon, PanelRightIcon, FileIcon, CommandIcon, UploadIcon, ChartIcon,
 } from './Icons.jsx';
 
 export default function CommandPalette({ mode }) {
@@ -32,6 +32,7 @@ export default function CommandPalette({ mode }) {
       { id: 'upload', label: t('upload'), Icon: UploadIcon, run: () => { const input = document.createElement('input'); input.type = 'file'; input.multiple = true; input.onchange = async () => { if (input.files.length) await s.uploadFiles('', [...input.files]); await s.refreshTree(); }; input.click(); } },
       { id: 'home', label: t('cmdGoHome'), Icon: HomeIcon, run: () => s.goHome() },
       { id: 'settings', label: t('cmdSettings'), Icon: SettingsIcon, run: () => s.openModal('settings') },
+      { id: 'stats', label: t('cmdStats'), Icon: ChartIcon, run: () => s.openModal('stats') },
       { id: 'shortcuts', label: t('cmdShortcuts'), Icon: KeyboardIcon, run: () => setTimeout(() => s.openModal('shortcuts'), 0) },
     ];
   }, [t]);

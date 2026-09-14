@@ -1,0 +1,63 @@
+% ACM conference template (acmart). `nonacm` removes the ACM reference
+% format block; drop the option for camera-ready ACM submissions.
+\documentclass[sigconf,nonacm]{acmart}
+
+\usepackage{booktabs}
+
+\begin{document}
+
+\title{An ACM Conference Paper Template}
+
+\author{First Author}
+\affiliation{\institution{Example University}\city{Beijing}\country{China}}
+\email{first@example.edu}
+
+\author{Second Author}
+\affiliation{\institution{Example Institute}\city{Shanghai}\country{China}}
+\email{second@example.edu}
+
+\begin{abstract}
+This template uses the ACM \texttt{acmart} class in \texttt{sigconf}
+format. Replace with your abstract; the class handles the two-column
+layout, headers, and reference formatting automatically.
+\end{abstract}
+
+\keywords{LaTeX, ACM, template, conference paper}
+
+\maketitle
+
+\section{Introduction}
+ACM conferences require the \texttt{acmart} class. Cite works
+as~\cite{acm_demo}.
+
+\section{Design}
+Describe your system design here.
+
+\begin{table}[h]
+  \centering
+  \caption{Example table.}
+  \label{tab:demo}
+  \begin{tabular}{lcc}
+    \toprule
+    System & Acc. & F1 \\
+    \midrule
+    Baseline & 81.2 & 0.79 \\
+    Ours     & \textbf{88.1} & \textbf{0.87} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Evaluation}
+Table~\ref{tab:demo} shows example results.
+
+\section{Conclusion}
+Conclude your paper.
+
+\begin{thebibliography}{1}
+\bibitem{acm_demo}
+A. Author and B. Author.
+\newblock An example article.
+\newblock In \emph{Proc. ACM Conference}, 2025.
+\end{thebibliography}
+
+\end{document}

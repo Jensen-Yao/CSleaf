@@ -5,7 +5,12 @@ import {
   SettingsIcon, SunIcon, MoonIcon, LangIcon, FolderIcon,
 } from './Icons.jsx';
 
-const TPL_LETTERS = { blank: 'λ', article: 'A', 'article-zh': '文', 'ieee-conference': 'IEEE', beamer: '▶', 'thesis-zh': '论', cv: 'CV', 'math-notes': '∑' };
+const TPL_LETTERS = {
+  blank: 'λ', article: 'A', 'article-zh': '文', 'ieee-conference': 'IEEE', 'ieee-journal': 'IEEE',
+  'acm-conf': 'ACM', 'springer-lncs': 'LNCS', elsevier: 'EV', beamer: '▶', 'beamer-zh': '▶',
+  'thesis-zh': '论', 'thesis-en': 'PhD', cv: 'CV', 'math-notes': '∑', 'lab-report-zh': '实',
+  'group-meeting-zh': '组', 'review-response': 'R', homework: 'HW', poster: 'P',
+};
 
 export default function HomePage() {
   const t = useStore(s => s.t);

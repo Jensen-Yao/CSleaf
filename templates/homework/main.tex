@@ -1,0 +1,51 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper, margin=2.2cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{CS 0000 \textsuperscript{}}        % course
+\fancyhead[R]{Your Name}                        % your name
+\fancyfoot[C]{Page \thepage\ of \pageref{LastPage}}
+
+\newenvironment{problem}[1]{\vspace{6pt}\noindent\textbf{Problem #1.}\itshape\ }{\par}
+\newenvironment{solution}{\vspace{2pt}\noindent\textbf{Solution.}\ }{\hfill$\blacksquare$\par}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE\bfseries Homework 1}\\[4pt]
+  {\normalsize Due: \today \quad $\cdot$ \quad Your Name \quad $\cdot$ \quad your.id@example.edu}
+\end{center}
+
+\begin{problem}{1 (Asymptotics)}
+Prove that $f(n) = 3n^2 + 10n + 7$ is $O(n^2)$.
+\end{problem}
+
+\begin{solution}
+For $n \ge 1$, we have $10n \le 10n^2$ and $7 \le 7n^2$, so
+$f(n) \le 20n^2$. Taking $c = 20$ and $n_0 = 1$ completes the proof.
+\end{solution}
+
+\begin{problem}{2 (Recurrences)}
+Solve $T(n) = 2T(n/2) + n$ by the Master Theorem.
+\end{problem}
+
+\begin{solution}
+With $a=2$, $b=2$, $f(n)=n=\Theta(n^{\log_b a})$, case 2 applies:
+$T(n) = \Theta(n\log n)$.
+\end{solution}
+
+\begin{problem}{3 (Short answer)}
+State the definition of NP-completeness.
+\end{problem}
+
+\begin{solution}
+A language $L$ is NP-complete if (i) $L \in$ NP, and (ii) for every
+$L' \in$ NP, $L' \le_p L$.
+\end{solution}
+
+\end{document}

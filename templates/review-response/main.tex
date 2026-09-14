@@ -1,0 +1,58 @@
+% Response letter for peer review — point-by-point structure.
+\documentclass[11pt]{article}
+\usepackage[a4paper, margin=2.4cm]{geometry}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{ulem}
+
+\definecolor{replied}{HTML}{0E9F6E}
+\newcommand{\reviewer}[1]{\vspace{8pt}\noindent{\large\bfseries #1}\par}
+\newcommand{\comment}[2]{\vspace{5pt}\noindent\textbf{\textcolor{blue!60!black}{Comment #1:}} \textit{#2}\par}
+\newcommand{\response}[1]{\vspace{3pt}\noindent\textbf{\textcolor{replied}{Response:}} #1\par}
+
+\title{\vspace{-1.2cm}\bfseries Response to Reviewers\\[4pt]
+\large Manuscript ID: EXAMPLE-2026-0042}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+Dear Editor and Reviewers,
+
+We thank the reviewers for their careful reading and constructive
+comments. We have revised the manuscript accordingly; all changes are
+highlighted in the revised version. Below we address each point.
+
+\reviewer{Reviewer \#1}
+
+\comment{1.1}{The motivation in the Introduction is too brief; please
+clarify the research gap.}
+
+\response{We expanded Section~1 (page 1--2, highlighted) to explicitly
+state the gap and our contributions. Specifically, we added: ``\ldots''
+}
+
+\comment{1.2}{Table 2 lacks error bars; are the improvements significant?}
+
+\response{We added standard deviations over 3 random seeds and a
+paired significance test ($p < 0.05$). The revised Table~2 now reports
+mean~$\pm$~std.}
+
+\reviewer{Reviewer \#2}
+
+\comment{2.1}{Eq.~(3) should define the symbols $q_i$ and $\lambda$.}
+
+\response{Fixed. Symbols are now defined right after Eq.~(3) on page~4.}
+
+\comment{2.2}{Please discuss the limitation of the self-training loop.}
+
+\response{We added a ``Limitations'' paragraph in Section~5
+(page~8) discussing noise accumulation and an early-stopping remedy.}
+
+\vspace{10pt}
+\noindent We believe the manuscript has been substantially improved and
+hope it is now suitable for publication.
+
+\end{document}

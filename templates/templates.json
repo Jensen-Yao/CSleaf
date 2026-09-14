@@ -1,18 +1,10 @@
 [
   {
-    "id": "blank",
-    "name": "Blank / 最小模板",
-    "nameEn": "Blank document",
-    "desc": "最小可编译的 LaTeX 文档，适合快速试验",
-    "icon": "page",
-    "compiler": "latexmk",
-    "tags": ["通用"]
-  },
-  {
     "id": "article",
     "name": "学术文章",
     "nameEn": "Academic article",
     "desc": "英文论文骨架：章节、TikZ 图、三线表、参考文献",
+    "descEn": "English paper skeleton: sections, TikZ figure, booktabs table, bibliography",
     "icon": "article",
     "compiler": "latexmk",
     "tags": ["英文", "论文"]
@@ -22,6 +14,7 @@
     "name": "中文学术论文",
     "nameEn": "Chinese article (ctex)",
     "desc": "ctexart 中文论文：摘要、关键词、章节、图表、参考文献",
+    "descEn": "Chinese paper with ctexart: abstract, keywords, figures, tables",
     "icon": "article",
     "compiler": "xelatex",
     "tags": ["中文", "论文"]
@@ -31,33 +24,147 @@
     "name": "IEEE 会议论文",
     "nameEn": "IEEE conference",
     "desc": "IEEEtran 会议模板，双栏排版，含参考文献与图表示例",
+    "descEn": "IEEEtran conference format, two-column",
     "icon": "ieee",
     "compiler": "latexmk",
     "tags": ["英文", "IEEE"]
   },
   {
+    "id": "ieee-journal",
+    "name": "IEEE 期刊论文",
+    "nameEn": "IEEE journal",
+    "desc": "IEEEtran 期刊模式：摘要、关键词、thanks 脚注、图表",
+    "descEn": "IEEEtran journal mode with thanks notes and keywords",
+    "icon": "ieee",
+    "compiler": "latexmk",
+    "tags": ["英文", "IEEE", "期刊"]
+  },
+  {
+    "id": "acm-conf",
+    "name": "ACM 会议论文",
+    "nameEn": "ACM conference",
+    "desc": "acmart sigconf 格式，自动处理版头与参考文献样式",
+    "descEn": "acmart sigconf format (nonacm option)",
+    "icon": "acm",
+    "compiler": "latexmk",
+    "tags": ["英文", "ACM"]
+  },
+  {
+    "id": "springer-lncs",
+    "name": "Springer LNCS",
+    "nameEn": "Springer LNCS",
+    "desc": "LNCS 单栏格式：多机构作者、Springer 参考文献风格",
+    "descEn": "LNCS single-column format for CS conferences",
+    "icon": "lncs",
+    "compiler": "latexmk",
+    "tags": ["英文", "Springer"]
+  },
+  {
+    "id": "elsevier",
+    "name": "Elsevier 期刊",
+    "nameEn": "Elsevier journal",
+    "desc": "elsarticle 前置区（作者/机构/摘要/关键词）+ 关键词分隔",
+    "descEn": "elsarticle frontmatter with keywords",
+    "icon": "elsevier",
+    "compiler": "latexmk",
+    "tags": ["英文", "Elsevier", "期刊"]
+  },
+  {
     "id": "beamer",
     "name": "Beamer 演示",
     "nameEn": "Beamer slides",
-    "desc": "学术报告幻灯片：分节、图表、分栏、高亮块",
+    "desc": "16:9 学术报告幻灯片：分节、图表、分栏、高亮块",
+    "descEn": "16:9 academic slides with blocks and columns",
     "icon": "slides",
     "compiler": "latexmk",
     "tags": ["演示"]
+  },
+  {
+    "id": "beamer-zh",
+    "name": "中文 Beamer 汇报",
+    "nameEn": "Chinese Beamer (ctexbeamer)",
+    "desc": "ctexbeamer 中文幻灯片：目录、分栏、数据表格",
+    "descEn": "Chinese slides via ctexbeamer",
+    "icon": "slides",
+    "compiler": "xelatex",
+    "tags": ["中文", "演示"]
   },
   {
     "id": "thesis-zh",
     "name": "中文毕业论文",
     "nameEn": "Chinese thesis",
     "desc": "ctexbook 毕业论文骨架：封面、摘要、目录、多章、附录、参考文献",
+    "descEn": "Chinese thesis skeleton with cover, TOC, chapters",
     "icon": "thesis",
     "compiler": "xelatex",
     "tags": ["中文", "学位论文"]
+  },
+  {
+    "id": "thesis-en",
+    "name": "英文学位论文",
+    "nameEn": "English thesis",
+    "desc": "book 类学位论文：标题页、Abstract、目录、图表清单、附录",
+    "descEn": "English thesis with title page, TOC, lists, appendix",
+    "icon": "thesis",
+    "compiler": "latexmk",
+    "tags": ["英文", "学位论文"]
+  },
+  {
+    "id": "lab-report-zh",
+    "name": "实验报告",
+    "nameEn": "Lab report (zh)",
+    "desc": "课程实验报告：目的、原理、步骤、数据表、分析结论",
+    "descEn": "Chinese course lab report",
+    "icon": "lab",
+    "compiler": "xelatex",
+    "tags": ["中文", "课程"]
+  },
+  {
+    "id": "group-meeting-zh",
+    "name": "组会汇报",
+    "nameEn": "Group meeting (zh)",
+    "desc": "周报式组会模板：进展、问题、实验记录表、下周计划",
+    "descEn": "Weekly group-meeting report in Chinese",
+    "icon": "meeting",
+    "compiler": "xelatex",
+    "tags": ["中文", "科研"]
+  },
+  {
+    "id": "review-response",
+    "name": "审稿回复信",
+    "nameEn": "Reviewer response",
+    "desc": "逐条 Reviewer Comment / Response 结构，回复高亮绿色",
+    "descEn": "Point-by-point response letter for peer review",
+    "icon": "reply",
+    "compiler": "latexmk",
+    "tags": ["英文", "投稿"]
+  },
+  {
+    "id": "homework",
+    "name": "课程作业",
+    "nameEn": "Homework / problem set",
+    "desc": "Problem/Solution 环境、页眉课程名、总页码",
+    "descEn": "Problem–solution sets with fancy header",
+    "icon": "hw",
+    "compiler": "latexmk",
+    "tags": ["英文", "课程"]
+  },
+  {
+    "id": "poster",
+    "name": "学术海报",
+    "nameEn": "Academic poster",
+    "desc": "tikzposter A0 竖版：多栏 block、TikZ 流程图、结果表",
+    "descEn": "A0 poster with tikzposter blocks",
+    "icon": "poster",
+    "compiler": "latexmk",
+    "tags": ["英文", "海报"]
   },
   {
     "id": "cv",
     "name": "英文简历",
     "nameEn": "Academic CV",
     "desc": "简洁单页学术简历：教育经历、发表论文、技能",
+    "descEn": "One-page academic CV",
     "icon": "cv",
     "compiler": "latexmk",
     "tags": ["简历"]
@@ -67,8 +174,19 @@
     "name": "数学笔记",
     "nameEn": "Math notes",
     "desc": "amsthm 定理环境、证明、编号公式，适合课程笔记",
+    "descEn": "Theorem environments and proofs for course notes",
     "icon": "math",
     "compiler": "latexmk",
     "tags": ["数学"]
+  },
+  {
+    "id": "blank",
+    "name": "Blank / 最小模板",
+    "nameEn": "Blank document",
+    "desc": "最小可编译的 LaTeX 文档，适合快速试验",
+    "descEn": "Minimal compilable document",
+    "icon": "page",
+    "compiler": "latexmk",
+    "tags": ["通用"]
   }
 ]
