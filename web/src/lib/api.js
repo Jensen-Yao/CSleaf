@@ -25,7 +25,13 @@ export const api = {
   texInfo: (force) => request(`/system/tex${force ? '?force=1' : ''}`),
   getSettings: () => request('/settings'),
   saveSettings: (patch) => request('/settings', { method: 'PUT', body: patch }),
+  // templates
   templates: () => request('/templates'),
+  templateDetail: (id) => request(`/templates/${id}/detail`),
+  templateFile: (id, path) => request(`/templates/${id}/file?path=${encodeURIComponent(path)}`),
+  templatePreviewUrl: (id) => `/api/templates/${id}/preview.pdf`,
+  saveCustomTemplate: (projectId, body) => request('/templates/custom', { method: 'POST', body: { projectId, ...body } }),
+  deleteCustomTemplate: (id) => request(`/templates/custom/${id}`, { method: 'DELETE' }),
 
   // projects
   projects: () => request('/projects'),

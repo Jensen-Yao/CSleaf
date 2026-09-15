@@ -7,6 +7,7 @@ const { getSettings, saveSettings, WORKSPACE_DIR } = require('../config');
 const tex = require('../services/tex');
 const projects = require('../services/projects');
 const files = require('../services/files');
+const templatesSvc = require('../services/templates');
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 100 * 1024 * 1024 } });
 const router = express.Router();
@@ -26,7 +27,45 @@ router.put('/settings', (req, res) => {
 });
 
 // ---------- templates ----------
-router.get('/templates', (req, res) => res.json(projects.listTemplates()));
+router.get('/templates', (req, res) => res.json(templatesSvc.listTemplates()));
+
+router.get('/templates/:id/detail', (req, res) => {
+  const t = templatesSvc.findTemplate(req.params.id);
+  if (!t || !t.available) return res.status(404).json({ error: 'Template not found' });
+  res.json({ ...t, files: templatesSvc.listFiles(req.params.id) });
+});
+
+router.get('/templates/:id/file', (req, res) => {
+  try {
+    const content = templatesSvc.readFile(req.params.id, req.query.path);
+    if (content == null) return res.status(404).json({ error: 'File not found' });
+    res.json({ content });
+  } catch (e) { res.status(400).json({ error: e.message }); }
+});
+
+router.get('/templates/:id/preview.pdf', async (req, res) => {
+  try {
+    const pdfPath = await templatesSvc.previewPdf(req.params.id);
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.send(fs.readFileSync(pdfPath));
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.post('/templates/custom', (req, res) => {
+  const p = projects.getProject(req.body?.projectId);
+  if (!p) return res.status(404).json({ error: 'Project not found' });
+  try {
+    res.json(templatesSvc.saveCustomTemplate(p, { name: req.body.name, desc: req.body.desc }));
+  } catch (e) { res.status(400).json({ error: e.message }); }
+});
+
+router.delete('/templates/custom/:id', (req, res) => {
+  try {
+    templatesSvc.deleteCustomTemplate(req.params.id);
+    res.json({ ok: true });
+  } catch (e) { res.status(400).json({ error: e.message }); }
+});
 
 // ---------- projects ----------
 router.get('/projects', (req, res) => res.json(projects.listProjects()));

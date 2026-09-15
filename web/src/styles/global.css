@@ -707,6 +707,39 @@ html[data-theme='light'] .csleaf-find-current { background: #fbbf2499; }
 .about-links { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
 .about-license { color: var(--text2); font-size: 11.5px; margin-top: 6px; }
 
+/* ---------- template detail modal ---------- */
+.tpl-detail-modal { width: min(980px, calc(100vw - 48px)); max-height: min(88vh, 860px); }
+.tpl-detail-head { display: flex; align-items: center; gap: 14px; padding: 18px 20px 12px; }
+.tpl-detail-name { font-size: 17px; font-weight: 750; }
+.tpl-detail-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 5px; }
+.tpl-detail-tabs { display: flex; gap: 4px; padding: 0 20px; border-bottom: 1px solid var(--border); }
+.tpl-detail-body { padding: 16px 20px; overflow: auto; display: flex; flex-direction: column; gap: 14px; min-height: 260px; max-height: calc(min(88vh, 860px) - 230px); }
+.tpl-detail-desc { margin: 0; font-size: 13.5px; color: var(--text1); line-height: 1.75; }
+.tpl-preview-row { display: flex; gap: 12px; overflow-x: auto; padding: 4px 2px 8px; }
+.tpl-preview-row img {
+  height: 400px; width: auto; border-radius: 4px;
+  box-shadow: 0 4px 18px #00000045; border: 1px solid var(--border);
+  flex: none; background: white;
+}
+.tpl-preview-loading {
+  padding: 60px 20px; text-align: center; color: var(--text2); font-size: 13px;
+  border: 1.5px dashed var(--border-strong); border-radius: 12px;
+}
+.tpl-files { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.tpl-files-title { font-size: 11.5px; color: var(--text2); font-weight: 650; margin-right: 2px; }
+.tpl-file {
+  font-family: var(--font-mono); font-size: 11px; padding: 4px 10px;
+  background: var(--bg2); border: 1px solid var(--border); border-radius: 99px;
+  color: var(--text1); cursor: pointer; transition: all var(--speed);
+}
+.tpl-file:hover { color: var(--text0); border-color: var(--border-strong); }
+.tpl-file.active { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+.tpl-source-code {
+  margin: 0; padding: 14px 16px; background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 10px; font-family: var(--font-mono); font-size: 12px; line-height: 1.7;
+  color: var(--text1); overflow: auto; max-height: 420px; white-space: pre;
+}
+
 /* monaco tweak */
 .monaco-editor .suggest-widget { border-radius: 10px; overflow: hidden; }
 .empty-editor {

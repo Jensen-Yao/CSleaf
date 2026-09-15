@@ -3,7 +3,8 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const AdmZip = require('adm-zip');
-const { WORKSPACE_DIR, TEMPLATES_DIR } = require('../config');
+const { WORKSPACE_DIR } = require('../config');
+const templates = require('./templates');
 
 function id() { return crypto.randomBytes(6).toString('hex'); }
 
@@ -72,31 +73,19 @@ function findMainTex(dir) {
   return null;
 }
 
-const TEMPLATE_INFO = (() => {
-  try {
-    return JSON.parse(fs.readFileSync(path.join(TEMPLATES_DIR, 'templates.json'), 'utf8'));
-  } catch { return []; }
-})();
-
-function listTemplates() {
-  return TEMPLATE_INFO.map(t => {
-    const exists = fs.existsSync(path.join(TEMPLATES_DIR, t.id, 'main.tex'));
-    return { ...t, available: exists };
-  });
-}
-
 function createProject({ name, template = 'blank', compiler }) {
   if (!validName(name)) throw new Error('Invalid project name');
   const pid = id();
   const dir = path.join(WORKSPACE_DIR, pid);
   fs.mkdirSync(dir, { recursive: true });
 
-  const tplId = TEMPLATE_INFO.some(t => t.id === template) ? template : 'blank';
-  const tplDir = path.join(TEMPLATES_DIR, tplId);
-  if (fs.existsSync(tplDir)) {
-    copyDir(tplDir, dir, ['.csleaf.json']);
+  const known = templates.listTemplates().some(t => t.id === template && t.available);
+  const tplId = known ? template : 'blank';
+  const tplDir = templates.templateDir(tplId);
+  if (tplDir && fs.existsSync(tplDir)) {
+    templates.copyTemplateDir(tplDir, dir);
   }
-  const metaTpl = readMeta(tplDir) || {};
+  const metaTpl = templates.findTemplate(tplId) || {};
   const mainFile = metaTpl.mainFile || findMainTex(dir) || 'main.tex';
   const now = Date.now();
   writeMeta(dir, {
@@ -208,5 +197,5 @@ function updateProjectConfig(project, patch) {
 module.exports = {
   listProjects, getProject, createProject, importProjectFromZip,
   renameProject, deleteProject, duplicateProject, updateProjectConfig,
-  listTemplates, findMainTex, touchProject, validName,
+  findMainTex, touchProject, validName,
 };

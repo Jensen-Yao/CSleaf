@@ -4,7 +4,7 @@
     "name": "学术文章",
     "nameEn": "Academic article",
     "desc": "英文论文骨架：章节、TikZ 图、三线表、参考文献",
-    "descEn": "English paper skeleton: sections, TikZ figure, booktabs table, bibliography",
+    "longDesc": "通用英文论文骨架，包含学术论文的全部常见元素：分层章节、TikZ 绘制的流程图（纯代码绘图，无需外部图片，开箱即编译）、booktabs 三线表、编号公式与 thebibliography 参考文献。适合课程论文、会议初稿与 LaTeX 日常练习。",
     "icon": "article",
     "compiler": "latexmk",
     "tags": ["英文", "论文"]
@@ -14,7 +14,7 @@
     "name": "中文学术论文",
     "nameEn": "Chinese article (ctex)",
     "desc": "ctexart 中文论文：摘要、关键词、章节、图表、参考文献",
-    "descEn": "Chinese paper with ctexart: abstract, keywords, figures, tables",
+    "longDesc": "基于 ctexart 文档类的中文论文模板，XeLaTeX 编译，自动使用 Windows 系统中文字体（宋体/黑体），无需手动配置字体。包含中文摘要与关键词、规范的章节编号、TikZ 流程图、三线表与中文参考文献。适合大多数中文课程论文与期刊投稿。",
     "icon": "article",
     "compiler": "xelatex",
     "tags": ["中文", "论文"]
@@ -24,7 +24,7 @@
     "name": "IEEE 会议论文",
     "nameEn": "IEEE conference",
     "desc": "IEEEtran 会议模板，双栏排版，含参考文献与图表示例",
-    "descEn": "IEEEtran conference format, two-column",
+    "longDesc": "IEEE 官方 IEEEtran 文档类的会议模式，标准双栏排版。包含摘要、关键词（IEEEkeywords）、双作者块、TikZ 图、三线表与 IEEE 风格参考文献。适合投稿 IEEE 系列会议（ICASSP、INFOCOM 等）。",
     "icon": "ieee",
     "compiler": "latexmk",
     "tags": ["英文", "IEEE"]
@@ -34,7 +34,7 @@
     "name": "IEEE 期刊论文",
     "nameEn": "IEEE journal",
     "desc": "IEEEtran 期刊模式：摘要、关键词、thanks 脚注、图表",
-    "descEn": "IEEEtran journal mode with thanks notes and keywords",
+    "longDesc": "IEEEtran 期刊模式（journal option），比会议版更完整的作者信息块（\\thanks 基金与联系方式脚注）、单栏摘要、图表随文排版。适合投稿 IEEE Transactions 系列期刊。",
     "icon": "ieee",
     "compiler": "latexmk",
     "tags": ["英文", "IEEE", "期刊"]
@@ -44,7 +44,7 @@
     "name": "ACM 会议论文",
     "nameEn": "ACM conference",
     "desc": "acmart sigconf 格式，自动处理版头与参考文献样式",
-    "descEn": "acmart sigconf format (nonacm option)",
+    "longDesc": "ACM 官方 acmart 文档类的 sigconf 会议格式，自动处理页眉页脚、版权块与参考文献格式。默认带 nonacm 选项（投稿练习用，去掉 ACM 版权要求），正式投稿时删除该选项即可。适合 ACM SIG 系列会议（SIGCOMM、CHI 等）。",
     "icon": "acm",
     "compiler": "latexmk",
     "tags": ["英文", "ACM"]
@@ -54,7 +54,7 @@
     "name": "Springer LNCS",
     "nameEn": "Springer LNCS",
     "desc": "LNCS 单栏格式：多机构作者、Springer 参考文献风格",
-    "descEn": "LNCS single-column format for CS conferences",
+    "longDesc": "Springer LNCS（Lecture Notes in Computer Science）单栏模板，支持 \\inst 多机构作者标注、匿名作者块与 Springer 风格参考文献。适合 LNCS/CCIS 系列计算机会议论文集。",
     "icon": "lncs",
     "compiler": "latexmk",
     "tags": ["英文", "Springer"]
@@ -64,7 +64,7 @@
     "name": "Elsevier 期刊",
     "nameEn": "Elsevier journal",
     "desc": "elsarticle 前置区（作者/机构/摘要/关键词）+ 关键词分隔",
-    "descEn": "elsarticle frontmatter with keywords",
+    "longDesc": "Elsevier 官方 elsarticle 文档类，用 frontmatter 区块集中管理标题、作者、机构、通讯作者、摘要与关键词（\\sep 分隔）。preprint 单栏便于写作，投稿前可切换 twocolumn。适合 Elsevier 旗下期刊。",
     "icon": "elsevier",
     "compiler": "latexmk",
     "tags": ["英文", "Elsevier", "期刊"]
@@ -74,7 +74,7 @@
     "name": "Beamer 演示",
     "nameEn": "Beamer slides",
     "desc": "16:9 学术报告幻灯片：分节、图表、分栏、高亮块",
-    "descEn": "16:9 academic slides with blocks and columns",
+    "longDesc": "16:9 宽屏学术演示模板，包含标题页、自动目录、分节页、columns 左右分栏、block 高亮块、TikZ 图与数据表。与论文共用同一套宏包生态，公式图表可直接复用。适合组会、课程展示与学术报告。",
     "icon": "slides",
     "compiler": "latexmk",
     "tags": ["演示"]
@@ -84,7 +84,7 @@
     "name": "中文 Beamer 汇报",
     "nameEn": "Chinese Beamer (ctexbeamer)",
     "desc": "ctexbeamer 中文幻灯片：目录、分栏、数据表格",
-    "descEn": "Chinese slides via ctexbeamer",
+    "longDesc": "ctexbeamer 中文演示模板，XeLaTeX 编译自动加载中文字体。包含目录页、itemize 要点、columns 分栏、三线表与数学公式。适合开题答辩、毕业答辩与中文组会汇报。",
     "icon": "slides",
     "compiler": "xelatex",
     "tags": ["中文", "演示"]
@@ -94,7 +94,7 @@
     "name": "中文毕业论文",
     "nameEn": "Chinese thesis",
     "desc": "ctexbook 毕业论文骨架：封面、摘要、目录、多章、附录、参考文献",
-    "descEn": "Chinese thesis skeleton with cover, TOC, chapters",
+    "longDesc": "ctexbook 中文毕业论文完整骨架：封面（学校/题目/学号/导师信息表）、中英文摘要、自动目录、绪论到总结的多章结构、三线表、GB 风格参考文献与附录。各学校格式细节（页眉、字体、页码）有差异，请以学校官方要求微调。",
     "icon": "thesis",
     "compiler": "xelatex",
     "tags": ["中文", "学位论文"]
@@ -104,7 +104,7 @@
     "name": "英文学位论文",
     "nameEn": "English thesis",
     "desc": "book 类学位论文：标题页、Abstract、目录、图表清单、附录",
-    "descEn": "English thesis with title page, TOC, lists, appendix",
+    "longDesc": "英文 book 类学位论文骨架：标题页（题目/作者/导师/学位声明）、Abstract、目录与图表清单自动生成、正文多章、backmatter 参考文献与附录。适合海外就读或英文授课的学位论文。",
     "icon": "thesis",
     "compiler": "latexmk",
     "tags": ["英文", "学位论文"]
@@ -114,7 +114,7 @@
     "name": "实验报告",
     "nameEn": "Lab report (zh)",
     "desc": "课程实验报告：目的、原理、步骤、数据表、分析结论",
-    "descEn": "Chinese course lab report",
+    "longDesc": "中文课程实验报告模板：居中的课程/实验/学生信息头，实验目的、实验原理（含公式）、实验内容与步骤（编号列表）、实验结果（数据表格）与结果分析五段式结构。适合本科计算机、电子等课程实验。",
     "icon": "lab",
     "compiler": "xelatex",
     "tags": ["中文", "课程"]
@@ -124,7 +124,7 @@
     "name": "组会汇报",
     "nameEn": "Group meeting (zh)",
     "desc": "周报式组会模板：进展、问题、实验记录表、下周计划",
-    "descEn": "Weekly group-meeting report in Chinese",
+    "longDesc": "科研组会周报模板：本周工作进展（要点列表）、遇到的问题（Q1/Q2 编号）、实验记录表（学习率/指标/备注）、下周计划。绿色章节标题条设计，每周复制一份即可连续记录。",
     "icon": "meeting",
     "compiler": "xelatex",
     "tags": ["中文", "科研"]
@@ -134,7 +134,7 @@
     "name": "审稿回复信",
     "nameEn": "Reviewer response",
     "desc": "逐条 Reviewer Comment / Response 结构，回复高亮绿色",
-    "descEn": "Point-by-point response letter for peer review",
+    "longDesc": "投稿修改阶段的逐条回复信：按 Reviewer 分节，每条意见（蓝色斜体）配一条回复（绿色 Response），支持引用修改位置与页码。开头有致编辑信模板。逐条对答是提高录用率的关键环节，这个模板让结构一目了然。",
     "icon": "reply",
     "compiler": "latexmk",
     "tags": ["英文", "投稿"]
@@ -144,7 +144,7 @@
     "name": "课程作业",
     "nameEn": "Homework / problem set",
     "desc": "Problem/Solution 环境、页眉课程名、总页码",
-    "descEn": "Problem–solution sets with fancy header",
+    "longDesc": "英文作业模板：problem 环境自动加粗题号、solution 环境自动以 ■ 结尾，页眉左侧课程号右侧姓名，页脚「第 x 页 / 共 y 页」（lastpage 自动统计）。适合 CS、数学等课程的习题集作业。",
     "icon": "hw",
     "compiler": "latexmk",
     "tags": ["英文", "课程"]
@@ -154,7 +154,7 @@
     "name": "学术海报",
     "nameEn": "Academic poster",
     "desc": "tikzposter A0 竖版：多栏 block、TikZ 流程图、结果表",
-    "descEn": "A0 poster with tikzposter blocks",
+    "longDesc": "tikzposter 制作的 A0 竖版学术海报：自动大标题区、左右双栏 block 布局、编号小节、TikZ 绘制的流程图与结果表格。 Britain 配色风格，可一键换主题（\\usetheme）。适合会议海报环节。",
     "icon": "poster",
     "compiler": "latexmk",
     "tags": ["英文", "海报"]
@@ -164,7 +164,7 @@
     "name": "英文简历",
     "nameEn": "Academic CV",
     "desc": "简洁单页学术简历：教育经历、发表论文、技能",
-    "descEn": "One-page academic CV",
+    "longDesc": "单页学术简历：姓名联系方式居中、绿色分节线（Education/Publications/Skills/Awards）、条目化排版。纯 article 类实现，无冷门依赖，任何 TeX 环境都能编译。适合申请材料与个人主页附页。",
     "icon": "cv",
     "compiler": "latexmk",
     "tags": ["简历"]
@@ -174,7 +174,7 @@
     "name": "数学笔记",
     "nameEn": "Math notes",
     "desc": "amsthm 定理环境、证明、编号公式，适合课程笔记",
-    "descEn": "Theorem environments and proofs for course notes",
+    "longDesc": "amsthm 驱动的数学笔记模板：预定义 Theorem/Lemma/Proposition（统一编号）、Definition/Example（定义样式）、Remark（强调样式）与 proof 环境（自动证明结束符）。附练习列表。适合数学课程笔记、习题解答与讨论班讲义。",
     "icon": "math",
     "compiler": "latexmk",
     "tags": ["数学"]
@@ -184,7 +184,7 @@
     "name": "Blank / 最小模板",
     "nameEn": "Blank document",
     "desc": "最小可编译的 LaTeX 文档，适合快速试验",
-    "descEn": "Minimal compilable document",
+    "longDesc": "LaTeX 的 hello-world：documentclass + 标题 + 两个小节 + 一个编号公式，十行以内。用于快速验证 TeX 环境是否可用，或作为从零搭建的起点。",
     "icon": "page",
     "compiler": "latexmk",
     "tags": ["通用"]

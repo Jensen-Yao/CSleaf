@@ -1,13 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useStore } from '../lib/store';
+import { api } from '../lib/api';
+import TemplateDetailModal from './TemplateDetailModal.jsx';
 import {
   PlusIcon, UploadIcon, TrashIcon, CopyIcon, EditIcon, DownloadIcon,
   SettingsIcon, SunIcon, MoonIcon, LangIcon, FolderIcon, CommandIcon,
-  CheckIcon, AlertIcon,
+  CheckIcon, AlertIcon, BookmarkIcon,
 } from './Icons.jsx';
 
 // per-template cover: single letter + gradient
-const TPL_STYLE = {
+export const TPL_STYLE = {
   blank: { letter: 'λ', g: 'linear-gradient(135deg,#64748b,#334155)' },
   article: { letter: 'A', g: 'linear-gradient(135deg,#34d399,#059669)' },
   'article-zh': { letter: '文', g: 'linear-gradient(135deg,#f87171,#dc2626)' },
@@ -28,7 +30,7 @@ const TPL_STYLE = {
   cv: { letter: 'CV', g: 'linear-gradient(135deg,#94a3b8,#475569)' },
   'math-notes': { letter: '∑', g: 'linear-gradient(135deg,#c084fc,#7e22ce)' },
 };
-const cover = (id) => TPL_STYLE[id] || TPL_STYLE.blank;
+export const cover = (id) => TPL_STYLE[id] || { letter: '★', g: 'linear-gradient(135deg,#94a3b8,#475569)' };
 
 function fmtRel(ts, lang) {
   if (!ts) return '';
@@ -64,6 +66,7 @@ export default function HomePage() {
   const toast = useStore(s => s.toast);
   const fileRef = useRef(null);
   const [tab, setTab] = useState('projects');
+  const [detailId, setDetailId] = useState(null);
 
   useEffect(() => { loadProjects(); }, []);
 
@@ -76,6 +79,7 @@ export default function HomePage() {
       kind: 'input',
       title: `${lang === 'zh' ? '使用模板' : 'Use template'} — ${templateName(tpl)}`,
       label: t('projectName'),
+      value: templateName(tpl),
       placeholder: lang === 'zh' ? '我的新论文' : 'My new paper',
       okText: t('create'),
       onOk: async (name) => {
@@ -178,22 +182,41 @@ export default function HomePage() {
             {templates.map(tpl => {
               const cs = cover(tpl.id);
               return (
-                <div key={tpl.id} className="project-card tpl-use-card" onClick={() => useTemplate(tpl)}>
+                <div key={tpl.id} className="project-card tpl-use-card" onClick={() => setDetailId(tpl.id)}>
                   <div className="top">
                     <div className="cover" style={{ background: cs.g }}>{cs.letter}</div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div className="title">{templateName(tpl)}</div>
                       <div className="meta">
                         {(tpl.tags || []).map(tag => <span key={tag} className="badge">{tag}</span>)}
+                        {tpl.custom && <span className="badge yellow">{lang === 'zh' ? '我的模板' : 'Mine'}</span>}
                       </div>
                     </div>
                   </div>
                   <div className="tpl-use-desc">{tdesc(tpl)}</div>
                   <div className="proj-foot">
                     <span className="badge green">{tpl.compiler}</span>
-                    <button className="btn small primary" onClick={e => { e.stopPropagation(); useTemplate(tpl); }}>
-                      {lang === 'zh' ? '使用此模板' : 'Use this template'}
-                    </button>
+                    <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                      {tpl.custom && (
+                        <button className="icon-btn" title={t('delete')} onClick={e => {
+                          e.stopPropagation();
+                          openDialog({
+                            kind: 'confirm', title: t('confirmDelete'), danger: true, okText: t('delete'),
+                            message: `${t('confirmDeleteMsg')} (${templateName(tpl)})`,
+                            onOk: async () => {
+                              try {
+                                await api.deleteCustomTemplate(tpl.id);
+                                loadProjects();
+                                toast(lang === 'zh' ? '模板已删除' : 'Template deleted', 'success');
+                              } catch (e2) { toast(e2.message, 'error'); }
+                            },
+                          });
+                        }}><TrashIcon /></button>
+                      )}
+                      <button className="btn small primary" onClick={e => { e.stopPropagation(); useTemplate(tpl); }}>
+                        {lang === 'zh' ? '使用' : 'Use'}
+                      </button>
+                    </div>
                   </div>
                 </div>
               );
@@ -235,6 +258,22 @@ export default function HomePage() {
                   <div className="proj-foot">
                     <span className="badge soft">{p.mainFile}</span>
                     <div className="actions" onClick={e => e.stopPropagation()}>
+                      <button className="icon-btn" title={t('saveAsTemplate')} onClick={() => {
+                        openDialog({
+                          kind: 'input', title: t('saveAsTemplate'),
+                          label: lang === 'zh' ? '模板名称（可选描述，用 | 分隔）' : 'Template name (optional: name | description)',
+                          value: p.name, okText: t('save'),
+                          onOk: async (v) => {
+                            if (!v) return;
+                            const [n, d] = v.split('|').map(s => s.trim());
+                            try {
+                              await api.saveCustomTemplate(p.id, { name: n, desc: d || '' });
+                              await loadProjects();
+                              toast(lang === 'zh' ? `已存为模板：${n}（在「模板库」中查看）` : `Saved as template: ${n}`, 'success', 3600);
+                            } catch (e2) { toast(e2.message, 'error'); }
+                          },
+                        });
+                      }}><BookmarkIcon /></button>
                       <button className="icon-btn" title={t('rename')} onClick={() => {
                         openDialogRename(p, renameProject, t);
                       }}><EditIcon /></button>
@@ -256,6 +295,13 @@ export default function HomePage() {
         )}
       </div>
       <NewProjectModal />
+      {detailId && (
+        <TemplateDetailModal
+          id={detailId}
+          onClose={() => setDetailId(null)}
+          onUse={(tpl) => { setDetailId(null); useTemplate(tpl); }}
+        />
+      )}
     </div>
   );
 }

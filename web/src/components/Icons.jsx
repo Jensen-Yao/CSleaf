@@ -46,3 +46,4 @@ export const StarIcon = (p) => <I {...p}><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 
 export const SearchIcon = (p) => <I {...p}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></I>;
 export const ChevronsIcon = (p) => <I {...p}><path d="m7 15 5 5 5-5M7 9l5-5 5 5"/></I>;
 export const ChartIcon = (p) => <I {...p}><path d="M3 3v18h18"/><path d="M7 16v-5M12 16V8M17 16v-8"/></I>;
+export const BookmarkIcon = (p) => <I {...p}><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></I>;

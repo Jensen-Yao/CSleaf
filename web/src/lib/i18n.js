@@ -129,6 +129,8 @@ const dict = {
   confirmDelete: { zh: '确认删除', en: 'Confirm delete' },
   confirmDeleteMsg: { zh: '确定要删除吗？此操作不可恢复。', en: 'Delete this item? This cannot be undone.' },
   create: { zh: '创建', en: 'Create' },
+  saveAsTemplate: { zh: '存为我的模板', en: 'Save as my template' },
+  myTemplates: { zh: '我的模板', en: 'My templates' },
 };
 
 export function makeT(lang) {
