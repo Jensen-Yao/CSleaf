@@ -171,7 +171,21 @@ function touchProject(project) {
 }
 
 function deleteProject(project) {
-  fs.rmSync(project.dir, { recursive: true, force: true });
+  // kill any running compiler that may hold handles inside the folder (Windows EPERM)
+  try { require('./tex').cancelCompile(project.id); } catch {}
+  try {
+    fs.rmSync(project.dir, { recursive: true, force: true, maxRetries: 6, retryDelay: 250 });
+  } catch (e) {
+    // last resort: move the folder aside so the UI operation succeeds,
+    // then delete once the OS releases the handles
+    const trash = path.join(WORKSPACE_DIR, `.trash-${project.id}-${Date.now()}`);
+    try {
+      fs.renameSync(project.dir, trash);
+      setTimeout(() => { try { fs.rmSync(trash, { recursive: true, force: true, maxRetries: 8, retryDelay: 400 }); } catch {} }, 4000);
+    } catch {
+      throw e;
+    }
+  }
 }
 
 function duplicateProject(project) {

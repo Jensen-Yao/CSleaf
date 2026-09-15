@@ -272,16 +272,22 @@ function synctexView(project, pdfName, file, line, col) {
   if (out.status !== 0) return { available: true, match: false };
   const text = out.stdout || '';
   const page = text.match(/^Page:\s*(\d+)/m);
-  const x = text.match(/^x:\s*([\d.]+)/m);
-  const y = text.match(/^y:\s*([\d.]+)/m);
-  const h = text.match(/^h:\s*([\d.]+)/m);
-  const v = text.match(/^v:\s*([\d.]+)/m);
+  const fx = text.match(/^h:\s*([\d.]+)/m);          // horizontal origin of the box
+  const fv = text.match(/^v:\s*([\d.]+)/m);          // vertical position (baseline)
+  const fW = text.match(/^W:\s*([\d.]+)/m);          // box width
+  const fH = text.match(/^H:\s*([\d.]+)/m);          // box height
   if (!page) return { available: true, match: false };
+  const h = parseFloat((fx || [0, '0'])[1]);
+  const v = parseFloat((fv || [0, '0'])[1]);
+  const W = parseFloat((fW || [0, '0'])[1]);
+  const H = parseFloat((fH || [0, '0'])[1]);
   return {
     available: true, match: true,
     page: parseInt(page[1], 10),
-    x: parseFloat((x || h || [0, '0'])[1]),
-    y: parseFloat((y || v || [0, '0'])[1]),
+    left: h,
+    top: Math.max(v - H, v - 8),   // top edge of the text box
+    width: W,
+    height: Math.max(H, 7),
   };
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "csleaf",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "CSleaf — a beautiful, local-first, Overleaf-like LaTeX editor for paper writing. Zero Docker, zero cloud, runs on your own machine.",
   "license": "MIT",
   "author": "Jensen-Yao",

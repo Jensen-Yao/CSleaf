@@ -65,11 +65,18 @@ router.post('/projects/:id/duplicate', (req, res) => {
   res.json(projects.duplicateProject(p));
 });
 
-router.delete('/projects/:id', (req, res) => {
+router.delete('/projects/:id', async (req, res) => {
   const p = projects.getProject(req.params.id);
   if (!p) return res.status(404).json({ error: 'Project not found' });
-  projects.deleteProject(p);
-  res.json({ ok: true });
+  try {
+    tex.cancelCompile(p.id);
+    // wait for the in-flight compile to fully exit (releases file handles on Windows)
+    for (let i = 0; i < 20 && tex.isCompiling(p.id); i++) {
+      await new Promise(r => setTimeout(r, 150));
+    }
+    projects.deleteProject(p);
+    res.json({ ok: true });
+  } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 // ---------- files ----------

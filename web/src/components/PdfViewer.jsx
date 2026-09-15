@@ -110,9 +110,26 @@ export default function PdfViewer() {
           pdf: st.pdfFile, file: st.activePath, line: pos.lineNumber, col: pos.column,
         });
         if (r.available && r.match) {
-          setSyncMarker({ page: r.page, top: r.y * scale });
-          goToPage(r.page);
-          setTimeout(() => setSyncMarker(null), 2400);
+          const top = r.top * scale;
+          setSyncMarker({
+            page: r.page,
+            top,
+            height: Math.max((r.height || 8) * scale, 6),
+            left: Math.max((r.left || 0) * scale - 3, 0),
+            width: Math.max((r.width || 0) * scale, 90),
+          });
+          // scroll so the target line sits in the middle of the viewport
+          const el = pageRefs.current[r.page];
+          if (el && scrollRef.current) {
+            scrollRef.current.scrollTo({
+              top: el.offsetTop + top - scrollRef.current.clientHeight / 2,
+              behavior: 'smooth',
+            });
+            setPage(r.page);
+          } else {
+            goToPage(r.page);
+          }
+          setTimeout(() => setSyncMarker(null), 3200);
         } else if (r.available === false) {
           st.toast('SyncTeX not available in this TeX distribution', 'warn');
         }
@@ -372,7 +389,7 @@ function PdfThumb({ doc, pageNo, active, onClick }) {
 }
 
 class PdfPage extends React.Component {
-  constructor(props) { super(props); this.canvasRef = React.createRef(); this.wrapRef = React.createRef(); this.state = { w: 0, h: 0, obs: null }; }
+  constructor(props) { super(props); this.canvasRef = React.createRef(); this.wrapRef = React.createRef(); this.renderToken = 0; this.state = { w: 0, h: 0, obs: null }; }
 
   componentDidMount() {
     const obs = new IntersectionObserver((entries) => {
@@ -384,16 +401,18 @@ class PdfPage extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.scale !== this.props.scale || prevProps.doc !== this.props.doc) {
-      if (this.wrapRef.current?.offsetParent !== null || this.wrapRef.current?.getBoundingClientRect().height > 0) this.renderPage();
+      this.renderPage();
     }
   }
 
-  componentWillUnmount() { this.state.obs?.disconnect(); }
+  componentWillUnmount() { this.state.obs?.disconnect(); this.renderToken++; }
 
   async renderPage() {
     const { doc, pageNo, scale } = this.props;
+    const token = ++this.renderToken; // invalidate any in-flight render
     try {
       const page = await doc.getPage(pageNo);
+      if (token !== this.renderToken) return;
       const canvas = this.canvasRef.current;
       if (!canvas) return;
       const mult = renderMultiplier();
@@ -403,8 +422,11 @@ class PdfPage extends React.Component {
       canvas.height = Math.floor(viewport.height);
       canvas.style.width = `${Math.floor(cssViewport.width)}px`;
       canvas.style.height = `${Math.floor(cssViewport.height)}px`;
-      await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
-      this.setState({ w: cssViewport.width, h: cssViewport.height });
+      const ctx = canvas.getContext('2d');
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      await page.render({ canvasContext: ctx, viewport }).promise;
+      if (token !== this.renderToken) return; // a newer render superseded this one
+      this.setState({ w: Math.floor(cssViewport.width), h: Math.floor(cssViewport.height) });
     } catch (e) { /* render cancelled */ }
   }
 
@@ -418,7 +440,14 @@ class PdfPage extends React.Component {
           if (this.canvasRef.current) this.props.onDblClick(e, this.props.pageNo, this.canvasRef.current);
         }}>
         <canvas ref={this.canvasRef} />
-        {marker && marker.top != null && <div className="sync-marker" style={{ top: marker.top }} />}
+        {marker && marker.top != null && (
+          <div className="sync-marker" style={{
+            top: marker.top,
+            height: marker.height || 11,
+            left: marker.left ?? 0,
+            width: marker.width || '100%',
+          }} />
+        )}
         {hl && hl.map((r, i) => (
           <div key={i} className="pdf-match" style={{
             left: r.left * scale, top: r.top * scale,

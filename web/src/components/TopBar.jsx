@@ -7,6 +7,7 @@ import {
 
 export default function TopBar() {
   const t = useStore(s => s.t);
+  const lang = useStore(s => s.lang);
   const project = useStore(s => s.project);
   const theme = useStore(s => s.theme);
   const setTheme = useStore(s => s.setTheme);
@@ -74,11 +75,20 @@ export default function TopBar() {
           {project.compiler} <ChevronIcon width={12} height={12} style={{ transform: 'rotate(90deg)' }} />
         </button>
         {menu === 'compiler' && (
-          <div className="dropdown-menu">
-            {['latexmk', 'pdflatex', 'xelatex', 'lualatex'].map(c => (
+          <div className="dropdown-menu" style={{ width: 270 }}>
+            <div className="dropdown-label">{t('compiler')}</div>
+            {[
+              ['latexmk', lang === 'zh' ? '推荐 · 自动多轮编译 + 参考文献' : 'Recommended · auto reruns + BibTeX'],
+              ['pdflatex', lang === 'zh' ? '经典引擎 · 纯英文文档' : 'Classic engine · English-only docs'],
+              ['xelatex', lang === 'zh' ? '中文论文选这个（系统字体）' : 'For Chinese documents (system fonts)'],
+              ['lualatex', lang === 'zh' ? '新一代引擎 · 稍慢' : 'Modern engine · slightly slower'],
+            ].map(([c, hint]) => (
               <button key={c} className={`dropdown-item ${c === project.compiler ? 'selected' : ''}`}
                 onClick={() => { setCompiler(c); setMenu(null); }}>
-                {c} {c === 'latexmk' ? <span style={{ color: 'var(--text2)', fontSize: 11 }}>（auto-rerun + bibtex）</span> : null}
+                <span style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontWeight: c === project.compiler ? 700 : 500 }}>{c}</span>
+                  <span style={{ fontSize: 10.5, color: 'var(--text2)' }}>{hint}</span>
+                </span>
                 <span className="check">✓</span>
               </button>
             ))}

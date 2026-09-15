@@ -135,7 +135,8 @@ export const useStore = create((set, get) => ({
   },
   goHome: () => {
     get().saveAll();
-    set({ view: 'home', project: null, tree: null, tabs: [], activePath: null, compile: null });
+    clearTimeout(compileTimer);
+    set({ view: 'home', project: null, tree: null, tabs: [], activePath: null, compileState: { running: false, phase: '', message: '', result: null } });
     get().loadProjects();
   },
 
