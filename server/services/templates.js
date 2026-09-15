@@ -6,6 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const AdmZip = require('adm-zip');
 const { TEMPLATES_DIR, WORKSPACE_DIR, BUILD_ARTIFACTS } = require('../config');
 const tex = require('./tex');
 
@@ -198,7 +199,86 @@ function deleteCustomTemplate(id) {
   return true;
 }
 
+/** Detect a sensible engine from template source (ctex family → xelatex). */
+function detectCompiler(dir, mainFile) {
+  try {
+    const src = fs.readFileSync(path.join(dir, mainFile), 'utf8');
+    if (/ctex|xeCJK|CJKutf8|\\fontspec/.test(src)) return 'xelatex';
+  } catch {}
+  return 'latexmk';
+}
+
+function findMainFile(dir) {
+  const candidates = [];
+  const walk = (abs, rel) => {
+    for (const e of fs.readdirSync(abs, { withFileTypes: true })) {
+      if (e.name.startsWith('.') || isArtifact(e.name)) continue;
+      const r = rel ? `${rel}/${e.name}` : e.name;
+      if (e.isDirectory()) walk(path.join(abs, e.name), r);
+      else if (/\.tex$/i.test(e.name)) candidates.push(r);
+    }
+  };
+  try { walk(dir, ''); } catch {}
+  for (const c of candidates) {
+    try {
+      if (fs.readFileSync(path.join(dir, c), 'utf8').includes('\\documentclass')) return c;
+    } catch {}
+  }
+  return candidates[0] || null;
+}
+
+/** Import a .zip archive as a user template. */
+function importTemplateFromZip(zipBuffer, name) {
+  const zip = new AdmZip(zipBuffer);
+  const id = crypto.randomBytes(5).toString('hex');
+  const dir = path.join(CUSTOM_DIR, id);
+  fs.mkdirSync(dir, { recursive: true });
+
+  const entries = zip.getEntries().map(e => ({ ...e, norm: e.entryName.replace(/\\/g, '/') }));
+  // detect a single top-level wrapper folder (GitHub-style archives) and flatten it
+  const tops = new Set();
+  for (const e of entries) {
+    const parts = e.norm.split('/').filter(Boolean);
+    if (parts.length > 1) tops.add(parts[0]);
+  }
+  const wrapper = tops.size === 1 ? [...tops][0] : null;
+
+  let count = 0;
+  for (const e of entries) {
+    if (e.isDirectory) continue;
+    const parts = e.norm.split('/').filter(Boolean);
+    if (!parts.length) continue;
+    if (parts.some(p => p === '__MACOSX' || (p.startsWith('.') && p.length > 1))) continue;
+    let rel = parts.join('/');
+    if (wrapper && parts[0] === wrapper) rel = parts.slice(1).join('/');
+    if (!rel) continue;
+    const dest = path.join(dir, rel);
+    if (!dest.startsWith(dir)) continue;
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    fs.writeFileSync(dest, e.getData());
+    count++;
+  }
+  if (count === 0) {
+    fs.rmSync(dir, { recursive: true, force: true });
+    throw new Error('ZIP archive contains no usable files');
+  }
+
+  const mainFile = findMainFile(dir) || 'main.tex';
+  const meta = {
+    id,
+    name: (name || `Imported template ${new Date().toISOString().slice(0, 10)}`).slice(0, 60),
+    desc: 'Imported from ZIP',
+    compiler: detectCompiler(dir, mainFile),
+    mainFile,
+    createdAt: Date.now(),
+    custom: true,
+  };
+  fs.writeFileSync(path.join(dir, '.csleaf-template.json'), JSON.stringify(meta, null, 2), 'utf8');
+  return meta;
+}
+
 module.exports = {
   listTemplates, findTemplate, templateDir, listFiles, readFile,
   previewPdf, saveCustomTemplate, deleteCustomTemplate, copyTemplateDir,
+  importTemplateFromZip,
 };

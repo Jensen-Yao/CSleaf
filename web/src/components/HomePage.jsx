@@ -65,6 +65,7 @@ export default function HomePage() {
   const importZip = useStore(s => s.importZip);
   const toast = useStore(s => s.toast);
   const fileRef = useRef(null);
+  const tplFileRef = useRef(null);
   const [tab, setTab] = useState('projects');
   const [detailId, setDetailId] = useState(null);
 
@@ -101,6 +102,19 @@ export default function HomePage() {
       toast(`${lang === 'zh' ? '已导入' : 'Imported'}: ${p.name}`, 'success');
     } catch (err) {
       toast(`${lang === 'zh' ? '导入失败' : 'Import failed'}: ${err.message}`, 'error');
+    }
+  }
+
+  async function handleTemplateImport(e) {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+    try {
+      const tpl = await api.importTemplate(file, file.name.replace(/\.zip$/i, ''));
+      await loadProjects();
+      toast(lang === 'zh' ? `模板已导入：${tpl.name}（编译器 ${tpl.compiler}）` : `Template imported: ${tpl.name} (${tpl.compiler})`, 'success', 4000);
+    } catch (err) {
+      toast(`${lang === 'zh' ? '模板导入失败' : 'Template import failed'}: ${err.message}`, 'error', 4200);
     }
   }
 
@@ -173,6 +187,17 @@ export default function HomePage() {
               <button className="btn primary" onClick={() => openModal('newproject')}>
                 <PlusIcon width={14} height={14} /> {t('newProject')}
               </button>
+            </>
+          )}
+          {tab === 'templates' && (
+            <>
+              <button className="btn" onClick={() => tplFileRef.current?.click()}>
+                <UploadIcon width={14} height={14} /> {t('importTemplate')}
+              </button>
+              <input ref={tplFileRef} type="file" accept=".zip" hidden onChange={handleTemplateImport} />
+              <span className="settings-hint" style={{ padding: '7px 12px' }}>
+                {lang === 'zh' ? '导入 .zip 模板包（如 GitHub 上的模板仓库），或把项目「存为我的模板」' : 'Import a .zip template pack, or save any project as a template'}
+              </span>
             </>
           )}
         </div>

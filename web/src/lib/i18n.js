@@ -6,6 +6,7 @@ const dict = {
   myProjects: { zh: '我的项目', en: 'My Projects' },
   newProject: { zh: '新建项目', en: 'New Project' },
   importZip: { zh: '导入 ZIP', en: 'Import ZIP' },
+  importTemplate: { zh: '导入模板', en: 'Import template' },
   emptyProjects: { zh: '还没有项目，从模板创建一个吧', en: 'No projects yet — create one from a template' },
   open: { zh: '打开', en: 'Open' },
   duplicate: { zh: '复制', en: 'Duplicate' },

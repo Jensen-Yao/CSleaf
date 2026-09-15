@@ -24,7 +24,7 @@ export default function PdfViewer() {
 
   const [pdfDoc, setPdfDoc] = useState(null);
   const [numPages, setNumPages] = useState(0);
-  const [scale, setScale] = useState(1.1);
+  const [scale, setScale] = useState(null); // null = not yet fitted; pages must not render
   const [page, setPage] = useState(1);
   const [error, setError] = useState(null);
   const [thumbsOpen, setThumbsOpen] = useState(true);
@@ -58,14 +58,17 @@ export default function PdfViewer() {
     return () => { cancelled = true; };
   }, [url]);
 
-  // auto fit width on load
+  // auto fit width on load (before any page renders — scale stays null until here)
   useEffect(() => {
     if (!pdfDoc || !scrollRef.current) return;
+    let cancelled = false;
     pdfDoc.getPage(1).then(p => {
+      if (cancelled) return;
       const viewport = p.getViewport({ scale: 1 });
       const avail = (scrollRef.current.clientWidth || 700) - (thumbsOpen ? 190 : 60);
       setScale(Math.min(Math.max(avail / viewport.width, 0.4), 2.5));
     });
+    return () => { cancelled = true; };
   }, [pdfDoc, thumbsOpen]);
 
   // track current page while scrolling
@@ -110,13 +113,13 @@ export default function PdfViewer() {
           pdf: st.pdfFile, file: st.activePath, line: pos.lineNumber, col: pos.column,
         });
         if (r.available && r.match) {
-          const top = r.top * scale;
+          const top = r.top * (scale || 1);
           setSyncMarker({
             page: r.page,
             top,
-            height: Math.max((r.height || 8) * scale, 6),
-            left: Math.max((r.left || 0) * scale - 3, 0),
-            width: Math.max((r.width || 0) * scale, 90),
+            height: Math.max((r.height || 8) * (scale || 1), 6),
+            left: Math.max((r.left || 0) * (scale || 1) - 3, 0),
+            width: Math.max((r.width || 0) * (scale || 1), 90),
           });
           // scroll so the target line sits in the middle of the viewport
           const el = pageRefs.current[r.page];
@@ -228,9 +231,9 @@ export default function PdfViewer() {
         <span className="page-ind">/ {numPages}</span>
         <button className="icon-btn" style={{ width: 26, height: 26 }} onClick={() => goToPage(page + 1)} disabled={page >= numPages}><ArrowRightIcon width={13} height={13} /></button>
         <div style={{ width: 1, height: 18, background: 'var(--border)' }} />
-        <button className="icon-btn" style={{ width: 26, height: 26 }} onClick={() => setScale(s => Math.max(s - 0.15, 0.3))}><ZoomOutIcon width={13} height={13} /></button>
-        <span className="page-ind" style={{ minWidth: 40 }}>{Math.round(scale * 100)}%</span>
-        <button className="icon-btn" style={{ width: 26, height: 26 }} onClick={() => setScale(s => Math.min(s + 0.15, 4))}><ZoomInIcon width={13} height={13} /></button>
+        <button className="icon-btn" style={{ width: 26, height: 26 }} onClick={() => setScale(s => Math.max((s || 1) - 0.15, 0.3))}><ZoomOutIcon width={13} height={13} /></button>
+        <span className="page-ind" style={{ minWidth: 40 }}>{scale ? Math.round(scale * 100) + '%' : '…'}</span>
+        <button className="icon-btn" style={{ width: 26, height: 26 }} onClick={() => setScale(s => Math.min((s || 1) + 0.15, 4))}><ZoomInIcon width={13} height={13} /></button>
         <button className="icon-btn" style={{ width: 26, height: 26 }} title={t('fitWidth')}
           onClick={() => {
             if (!pdfDoc || !scrollRef.current) return;
@@ -407,9 +410,18 @@ class PdfPage extends React.Component {
 
   componentWillUnmount() { this.state.obs?.disconnect(); this.renderToken++; }
 
-  async renderPage() {
+  /** Serialize renders: never two pdf.js tasks on the same canvas at once. */
+  renderPage() {
+    const token = ++this.renderToken;
+    this._queue = Promise.resolve(this._queue)
+      .catch(() => {})
+      .then(() => (token === this.renderToken ? this.doRender(token) : null));
+    return this._queue;
+  }
+
+  async doRender(token) {
     const { doc, pageNo, scale } = this.props;
-    const token = ++this.renderToken; // invalidate any in-flight render
+    if (scale == null) return; // wait until fit-width has settled
     try {
       const page = await doc.getPage(pageNo);
       if (token !== this.renderToken) return;

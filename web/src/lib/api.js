@@ -32,6 +32,12 @@ export const api = {
   templatePreviewUrl: (id) => `/api/templates/${id}/preview.pdf`,
   saveCustomTemplate: (projectId, body) => request('/templates/custom', { method: 'POST', body: { projectId, ...body } }),
   deleteCustomTemplate: (id) => request(`/templates/custom/${id}`, { method: 'DELETE' }),
+  importTemplate: (file, name) => {
+    const fd = new FormData();
+    fd.append('file', file);
+    if (name) fd.append('name', name);
+    return request('/templates/import', { method: 'POST', body: fd });
+  },
 
   // projects
   projects: () => request('/projects'),

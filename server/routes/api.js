@@ -67,6 +67,13 @@ router.delete('/templates/custom/:id', (req, res) => {
   } catch (e) { res.status(400).json({ error: e.message }); }
 });
 
+router.post('/templates/import', upload.single('file'), (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+    res.json(templatesSvc.importTemplateFromZip(req.file.buffer, req.body?.name));
+  } catch (e) { res.status(400).json({ error: e.message }); }
+});
+
 // ---------- projects ----------
 router.get('/projects', (req, res) => res.json(projects.listProjects()));
 
